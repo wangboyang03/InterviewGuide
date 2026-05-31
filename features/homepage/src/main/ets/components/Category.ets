@@ -1,5 +1,5 @@
 import { QuestionType } from "../models"
-import { QuestionItem } from "./QuestionItem"
+import { QuestionItemComponent } from "./QuestionItem"
 
 @Component
 export struct HomePageCategory {
@@ -18,14 +18,21 @@ export struct HomePageCategory {
     Tabs() {
       ForEach(this.list, (item: QuestionType) => {
         TabContent() {
-          Column() {
-            QuestionItem()
-            QuestionItem()
-            QuestionItem()
-            QuestionItem()
-            QuestionItem()
-            QuestionItem()
-            QuestionItem()
+          Scroll() {
+            Column() {
+              ForEach(Array.from(Array(100)), () => {
+                QuestionItemComponent({
+                  item: {
+                    id: "1",
+                    stem: "1+2=?",
+                    difficulty: 5,
+                    likeCount: 80,
+                    views: 199,
+                    readFlag: 0
+                  }
+                })
+              })
+            }
           }
         }
         .tabBar(

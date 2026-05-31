@@ -1,12 +1,15 @@
 import { QuestionTag } from "basic"
+import { QuestionItem } from "../models"
 
 @Component
-export struct QuestionItem {
+export struct QuestionItemComponent {
+  @Prop item: QuestionItem = {} as QuestionItem
+
   build() {
     Column({ space: 10 }) {
       Row({ space: 5 }) {
-        QuestionTag()
-        Text('1+1=?')
+        QuestionTag({ difficulty: this.item.difficulty }) // 传入试题难度标签
+        Text(this.item?.stem) // 题目
           .fontSize(15)
           .layoutWeight(1)
           .maxLines(1)
@@ -16,11 +19,11 @@ export struct QuestionItem {
       .width('100%')
 
       RowSplit() {
-        Text('点赞 0')
+        Text(`点赞 ${this.item.likeCount}`)
           .grayText(true)
-        Text('浏览 0')
+        Text(`浏览 ${this.item.views}`)
           .grayText()
-        Text('看过')
+        Text(this.item.readFlag ? "已看过" : "未看过")
           .grayText()
       }
     }
