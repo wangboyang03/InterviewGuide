@@ -1,23 +1,61 @@
+import { Constants, TabItem } from 'basic'
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  @State activatedIndex: number = 0 // 默认首页
+  @StorageProp(Constants.SAFE_BOTTOM_HEIGHT_KEY) bottomHeight: number = 0
+  tabBarList: TabItem[] = [
+    {
+      icon: $r('app.media.tabbar_home'),
+      activeIcon: $r('app.media.tabbar_home_fill'),
+      title: '首页',
+      name: 'home'
+    },
+    {
+      icon: $r('app.media.tabbar_project'),
+      activeIcon: $r('app.media.tabbar_project_fill'),
+      title: '项目',
+      name: 'project'
+    },
+    {
+      icon: $r('app.media.tabbar_interview'),
+      activeIcon: $r('app.media.tabbar_interview_fill'),
+      title: '面经',
+      name: 'interview'
+    },
+    {
+      icon: $r('app.media.tabbar_mine'),
+      activeIcon: $r('app.media.tabbar_mine_fill'),
+      title: '我的',
+      name: 'mine'
+    }
+  ]
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .onClick(() => {
-          this.message = 'Welcome';
-        })
+    Tabs({index: $$this.activatedIndex}) {
+      // TabContent
+      ForEach(this.tabBarList, (item: TabItem) => {
+        TabContent() {
+          Text(item.title)
+        }.tabBar(this.tabBarBuilder(item))
+      })
     }
-    .height('100%')
-    .width('100%')
+    .barPosition(BarPosition.End)
+    .animationDuration(0)
+    .padding({
+      bottom: this.bottomHeight
+    })
+  }
+
+  @Builder tabBarBuilder(item: TabItem) {
+    Column({ space: 5 }) {
+      Image(item.name == this.tabBarList[this.activatedIndex].name ? item.activeIcon : item.icon)
+        .width(24)
+        .aspectRatio(1)
+      Text(item.title)
+        .fontSize(12)
+        .fontColor(item.name == this.tabBarList[this.activatedIndex].name ? $r("app.color.black") : $r("app.color.common_gray_01"))
+    }
   }
 }

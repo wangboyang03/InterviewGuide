@@ -6,7 +6,11 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "basic": "file:../../commons/basic"
+    "basic": "file:../../commons/basic",
+    "homepage": "file:../../features/homepage",
+    "mine": "file:../../features/mine",
+    "project": "file:../../features/project",
+    "interview": "file:../../features/interview"
   }
 }
 
