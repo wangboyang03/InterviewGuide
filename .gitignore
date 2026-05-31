@@ -1,0 +1,113 @@
+# =========================
+# HarmonyOS / DevEco Studio
+# =========================
+
+# IDE
+.idea/
+*.iml
+
+# Build
+build/
+**/build/
+
+# Hvigor
+.hvigor/
+**/.hvigor/
+
+# Native Build
+.cxx/
+
+# Local Config
+local.properties
+
+# DevEco
+.arkui-x/
+.preview/
+
+# =========================
+# Node
+# =========================
+
+node_modules/
+oh_modules/
+
+# Package Lock
+package-lock.json
+oh-package-lock.json5
+
+# =========================
+# HarmonyOS Generated Files
+# =========================
+
+BuildProfile.ets
+**/BuildProfile.ets
+
+# Generated Cache
+.cache/
+.temp/
+
+# =========================
+# Logs
+# =========================
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# MacOS
+# =========================
+
+.DS_Store
+
+# =========================
+# VSCode
+# =========================
+
+.vscode/
+
+# =========================
+# Flutter Hybrid（如果有）
+# =========================
+
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.dart_tool/
+
+**/src/main/resources/rawfile/flutter_assets/
+
+# Flutter Build
+.flutter/
+build/flutter/
+
+# =========================
+# Test
+# =========================
+
+.test/
+**/.test/
+
+# =========================
+# Archive
+# =========================
+
+*.har
+*.hap
+
+# =========================
+# Certificates（如果有）
+# =========================
+
+*.p12
+*.jks
+*.keystore
+
+# =========================
+# Temporary Files
+# =========================
+
+*.swp
+*.swo
+*~
