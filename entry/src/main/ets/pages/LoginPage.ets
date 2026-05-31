@@ -1,4 +1,7 @@
 import { HMNavigationBar } from '../commons/components/HMNavigationBar'
+import { GlobalVariable } from '../commons/constants'
+import { hmHttp } from '../commons/utils/HMHttp'
+import { LoginParams, User } from '../models'
 
 @Entry
 @Component
@@ -13,6 +16,41 @@ struct LoginPage {
   isAgree: boolean = false
   @State
   loading: boolean = false
+
+  /**
+   * 登录校验
+   */
+  async login() {
+    if (this.loading) {
+      return;
+    }
+    if (!this.username.trim() || !this.password.trim()) {
+      this.getUIContext().getPromptAction().showToast({ message: '用户名或密码不能为空'})
+    }
+    if (!this.isAgree) {
+      this.getUIContext().getPromptAction().showToast({ message: '请先同意协议'})
+    }
+    // 可以请求登录接口
+    try {
+      this.loading = true
+      const result = await hmHttp.request<User,LoginParams>({
+        url:'login',
+        method: 'post',
+        data:{
+          username: this.username,
+          password: this.password
+        } as LoginParams
+      })
+      AppStorage.setOrCreate<User>(GlobalVariable.USER_KEY,result) // 存储用户信息到全局
+      this.getUIContext().getRouter().back() // 返回
+    } catch (error) {
+      // 日志.
+      this.getUIContext().getPromptAction().showToast({message: '请检查用户名和密码是否匹配'})
+    } finally {
+      this.loading = false
+    }
+
+  }
 
   build() {
     Column() {
@@ -85,7 +123,7 @@ struct LoginPage {
         })
         .stateEffect(false) // 设置是否开启按压态显示效果
         .onClick(() => {
-          // TODO
+          this.login()
         })
       }
       .padding({ left: 36, right: 36, top: 30 })

@@ -2,6 +2,7 @@ import { HMClockIn } from '../commons/components'
 import { router } from '@kit.ArkUI'
 import { GlobalVariable } from '../commons/constants'
 import { hmStatusBar } from '../commons/utils/HMStatusBar'
+import { User } from '../models'
 
 interface Nav {
   icon: ResourceStr
@@ -21,19 +22,21 @@ interface Tool {
 export struct MinePage {
   @StorageProp(GlobalVariable.SAFE_TOP_HEIGHT)
   topHeight: number = 0
+  @StorageProp(GlobalVariable.USER_KEY) user: User = {} as User // 获取用户信息对象
 
   build() {
     Column({ space: 16 }) {
       Row({ space: 12 }) {
-        Image($r('app.media.ic_mine_avatar'))
+        Text(JSON.stringify(this.user))
+        Image(this.user.avatar ?? $r('app.media.ic_mine_avatar'))
           .alt($r('app.media.ic_mine_avatar'))
           .width(55)
           .aspectRatio(1)
           .borderRadius(55)
         // 是否登录
-        if (false) {
+        if (!!this.user.token) {
           Column({ space: 4 }) {
-            Text('用户名')
+            Text(this.user.nickName ?? this.user.username)
               .fontSize(18)
               .fontWeight(500)
               .maxLines(1)
@@ -63,7 +66,7 @@ export struct MinePage {
             })
         }
 
-        HMClockIn({ clockInCount: 10 })
+        HMClockIn({ clockInCount: this.user.clockinNumbers })
       }
       .width('100%')
       .height(100)
