@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B51BD3D966B97B385CC2CC58DF593A9013793E9B92B3FE051053AE4796A20ED58ADBC467202E3E2",
+          "profile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p12",
+          "storePassword": "0000001B901E9C84359874F66642BF4AB8300B7325006D78FC7B3BB7CAB661912724F0FE067973E3759C8A"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
@@ -28,7 +42,59 @@
   "modules": [
     {
       "name": "phone",
-      "srcPath": "./phone",
+      "srcPath": "./products/phone",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "basic",
+      "srcPath": "./commons/basic",
+    },
+    {
+      "name": "homepage",
+      "srcPath": "./features/homepage",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "interview",
+      "srcPath": "./features/interview",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "project",
+      "srcPath": "./features/project",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mine",
+      "srcPath": "./features/mine",
       "targets": [
         {
           "name": "default",
