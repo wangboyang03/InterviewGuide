@@ -1,4 +1,8 @@
 import { Constants, TabItem } from 'basic'
+import { HomePageView } from 'homepage'
+import { InterView } from 'interview'
+import { MineView } from 'mine'
+import { ProjectView } from 'project'
 
 @Entry
 @Component
@@ -10,7 +14,7 @@ struct Index {
       icon: $r('app.media.tabbar_home'),
       activeIcon: $r('app.media.tabbar_home_fill'),
       title: '首页',
-      name: 'home'
+      name: 'homepage'
     },
     {
       icon: $r('app.media.tabbar_project'),
@@ -37,7 +41,15 @@ struct Index {
       // TabContent
       ForEach(this.tabBarList, (item: TabItem) => {
         TabContent() {
-          Text(item.title)
+          if (item.name == 'homepage') {
+            HomePageView()
+          } else if (item.name == 'interview') {
+            InterView()
+          } else if (item.name == 'project') {
+            ProjectView()
+          } else {
+            MineView()
+          }
         }.tabBar(this.tabBarBuilder(item))
       })
     }
