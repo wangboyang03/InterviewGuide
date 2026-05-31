@@ -1,4 +1,5 @@
 import { ClockSignIn, Constants, SearchBox } from "basic"
+import { HomePageCategory } from "../components"
 
 @Component
 export struct HomePageView {
@@ -19,6 +20,8 @@ export struct HomePageView {
       } // 搜索框组件
 
       this.getSwiperBuilder() // 轮播图
+
+      this.getQuestionBuilder() // 试题分类
     }
     .width("100%")
     .height("100%")
@@ -27,6 +30,9 @@ export struct HomePageView {
     })
   }
 
+  /**
+   * 轮播图容器
+   */
   @Builder getSwiperBuilder() {
     Swiper() {
       ForEach(this.banners, (item: ResourceStr) => {
@@ -52,5 +58,17 @@ export struct HomePageView {
         .selectedItemWidth(30)
         .selectedColor($r("app.color.white"))
     )
+  }
+
+  /**
+   * 试题分类容器
+   */
+  @Builder getQuestionBuilder() {
+    Column() {
+      HomePageCategory()
+    }
+    .width("100%")
+    .layoutWeight(1)
+    .backgroundColor($r("app.color.white"))
   }
 }
