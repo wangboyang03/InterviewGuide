@@ -29,8 +29,8 @@
       "dynamicDependencies": {},
       "maskedByOverrideDependencyMap": false
     },
-    "entry": {
-      "name": "entry",
+    "phone": {
+      "name": "phone",
       "dependencies": {},
       "devDependencies": {},
       "dynamicDependencies": {},

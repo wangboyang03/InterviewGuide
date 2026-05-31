@@ -4,60 +4,15 @@
       {
         "MODULE_NAME": "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf",
         "API_TYPE": "stageMode",
-        "INCLUDE_IN_BUILD": true,
-        "IS_COMMAND_LINE_ENTRY_MODULE": true,
-        "BUILD_OPTION": [
-          {
-            "path": "debuggable",
-            "traceValue": true,
-            "value": true
-          },
-          {
-            "path": "copyFrom",
-            "traceValue": false,
-            "value": ""
-          },
-          {
-            "path": "strictMode",
-            "traceValue": false,
-            "value": ""
-          },
-          {
-            "path": "strictMode.caseSensitiveCheck",
-            "traceValue": true,
-            "value": true
-          },
-          {
-            "path": "strictMode.useNormalizedOHMUrl",
-            "traceValue": true,
-            "value": true
-          },
-          {
-            "path": "resOptions",
-            "traceValue": false,
-            "value": ""
-          },
-          {
-            "path": "resOptions.copyCodeResource",
-            "traceValue": false,
-            "value": ""
-          },
-          {
-            "path": "resOptions.copyCodeResource.enable",
-            "traceValue": true,
-            "value": false
-          }
-        ],
+        "INCLUDE_IN_BUILD": false,
+        "IS_COMMAND_LINE_ENTRY_MODULE": false,
+        "BUILD_OPTION": [],
         "PACKAGE_JSON": [],
-        "MODULE_TYPE": "entry",
-        "INCREMENTAL_TASKS": {
-          "COMPILE_ARKTS": true
-        },
-        "IS_INCREMENTAL_MODULE": true
+        "IS_INCREMENTAL_MODULE": false
       }
     ],
     "NATIVE_COMPILER": "Default",
-    "IS_FULL_BUILD": false,
+    "IS_FULL_BUILD": true,
     "PACKAGE_JSON": [],
     "BUILD_MODE": "debug"
   },
@@ -70,36 +25,92 @@
     "BUILD_ANALYSIS_MODE": "normal",
     "TASK_TIME": {
       "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf": {
-        "CreateModuleInfo": 181583,
-        "ConfigureCmake": 77333,
-        "PreCheckSyscap": 71500,
-        "GeneratePkgSdkInfo": 1347375,
-        "ProcessIntegratedHsp": 170041,
-        "BuildNativeWithCmake": 69625,
-        "SyscapTransform": 681542,
-        "ProcessStartupConfig": 577166,
-        "BuildNativeWithNinja": 256500,
-        "BuildJS": 368083,
-        "CompileArkTS": 386969459,
-        "ProcessCompiledResources": 235333,
-        "PackageHap": 466012625,
-        "PackingCheck": 1545209,
-        "SignHap": 70858583,
-        "CollectDebugSymbol": 230667,
-        "assembleHap": 79334
+        "clean": 64803833,
+        "init": 194250
+      },
+      "APP": {
+        "clean": 147833,
+        "init": 102208
       }
     },
     "CUSTOM_TASK_TIME": {},
     "CUSTOM_PLUGIN_TIME": {},
-    "APIS": [
-      "getProperty"
-    ],
+    "APIS": [],
     "CONFIG_EXPERIMENT": {
       "ENABLE_MODULE_SKIP": false,
       "ENABLE_CPP_FUNCTION_LEVEL_INCREMENTAL": false
     },
     "CONFIG_PROPERTIES": {},
-    "TOTAL_TIME": 1028169958,
-    "BUILD_ID": "202605311101237660"
+    "TOTAL_TIME": 11762500,
+    "BUILD_ID": "202605311821175100",
+    "ERROR_MESSAGE": [
+      {
+        "CODE": "00303011",
+        "MESSAGE": "No modules found. At file: %s",
+        "SOLUTIONS": [
+          "Please check root project build-profile.json5"
+        ],
+        "TIMESTAMP": "1780222877511"
+      },
+      {
+        "CODE": "00303011",
+        "STACK": "00303011 Configuration Error\n...",
+        "PROJECT_CONFIG": {
+          "buildMode": "Debug",
+          "compileMode": "esmodule",
+          "moduleType": "entry",
+          "targetName": ".default",
+          "packageManagerType": "ohpm",
+          "isLocalTest": false,
+          "needCoverageInsert": false,
+          "debugLine": false,
+          "compileSdkVersion": 24,
+          "compatibleSdkVersion": 23,
+          "originCompatibleSdkVersion": "6.1.0(23)",
+          "etsLoaderVersion": "6.1.1.125",
+          "etsLoaderReleaseType": "Release",
+          "aotCompileMode": "type",
+          "isCrossplatform": false,
+          "bundleType": "app",
+          "apiVersion": 24,
+          "isFaMode": false,
+          "deviceTypes": [
+            "phone",
+            "tablet",
+            "2in1"
+          ],
+          "integratedHsp": false,
+          "branchElimination": false,
+          "tsImportSendable": false,
+          "resolveConflictMode": true,
+          "useNativeResolver": true,
+          "shouldEmitJs": true,
+          "useTscResolve": false,
+          "singleFileEmit": false,
+          "executionMode": "memory",
+          "isHarDeduplicateEnabled": false,
+          "autoLazyImport": false,
+          "allowEmptyBundleName": false,
+          "reExportCheckMode": "noCheck",
+          "usePathPlaceholder": false,
+          "writeRollupCache": true,
+          "isExpandImportEnabled": false,
+          "ignoreCrossplatformCheck": false,
+          "skipOhModulesLint": false,
+          "enableStrictCheckOHModule": false,
+          "useDeclarationFileSignature": false,
+          "isPreloadSoEnabled": false,
+          "strictMode.caseSensitiveCheck": true,
+          "strictMode.useNormalizedOHMUrl": true,
+          "strictMode.noExternalImportByPath": true,
+          "runtimeOS": "HarmonyOS",
+          "sdkInfo": "false:24:6.1.1.125:Release",
+          "useSourceHash": false,
+          "isByteCodeHarOptimize": false,
+          "copyCodeResourceEnable": false,
+          "uiTransformOptimization": false
+        }
+      }
+    ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "ohos-module-entry": [
+  "ohos-module-phone": [
     {
       "TASK_NAME": "assembleHap",
       "GROUP": "Hook",

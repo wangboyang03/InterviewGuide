@@ -1,50 +1,50 @@
 {
   "version": 1,
-  "ohos-module-entry": {
+  "ohos-module-phone": {
     "SELECT_TARGET": "default",
-    "MODULE_BUILD_DIR": "/Users/wangboyang/Documents/ai_interview_success/entry/build",
+    "MODULE_BUILD_DIR": "/Users/wangboyang/Documents/ai_interview_success/phone/build",
     "TARGETS": {
       "default": {
-        "SOURCE_ROOT": "/Users/wangboyang/Documents/ai_interview_success/entry/src/main",
+        "SOURCE_ROOT": "/Users/wangboyang/Documents/ai_interview_success/phone/src/main",
         "RESOURCES_PATH": [
-          "/Users/wangboyang/Documents/ai_interview_success/entry/src/main/resources"
+          "/Users/wangboyang/Documents/ai_interview_success/phone/src/main/resources"
         ],
         "BUILD_PATH": {
-          "OUTPUT_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/outputs/default",
-          "INTERMEDIA_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates",
-          "JS_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/loader_out/default",
-          "JS_LITE_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/loader_out_lite/default",
-          "RES_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/res/default",
-          "RES_PROFILE_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/res/default/resources/base/profile",
-          "ETS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/cache/default/default@CompileArkTS/esmodule",
-          "JS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/cache/default/default@CompileJS/jsbundle",
-          "WORKER_LOADER": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/loader/default/loader.json",
-          "MANIFEST_JSON": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/manifest/default",
-          "OUTPUT_METADATA_JSON": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/hap_metadata/default/output_metadata.json",
-          "SOURCE_MAP_DIR": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/source_map/default"
+          "OUTPUT_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/outputs/default",
+          "INTERMEDIA_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/loader_out/default",
+          "JS_LITE_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/loader_out_lite/default",
+          "RES_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/res/default",
+          "RES_PROFILE_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/res/default/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/cache/default/default@CompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/cache/default/default@CompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/loader/default/loader.json",
+          "MANIFEST_JSON": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/manifest/default",
+          "OUTPUT_METADATA_JSON": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/hap_metadata/default/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/source_map/default"
         },
         "BUILD_OPTION": {
           "debuggable": true
         }
       },
       "ohosTest": {
-        "SOURCE_ROOT": "/Users/wangboyang/Documents/ai_interview_success/entry/src/ohosTest",
+        "SOURCE_ROOT": "/Users/wangboyang/Documents/ai_interview_success/phone/src/ohosTest",
         "RESOURCES_PATH": [
-          "/Users/wangboyang/Documents/ai_interview_success/entry/src/ohosTest/resources"
+          "/Users/wangboyang/Documents/ai_interview_success/phone/src/ohosTest/resources"
         ],
         "BUILD_PATH": {
-          "OUTPUT_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/outputs/ohosTest",
-          "INTERMEDIA_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates",
-          "JS_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/loader_out/ohosTest",
-          "JS_LITE_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/loader_out_lite/ohosTest",
-          "RES_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/res/ohosTest",
-          "RES_PROFILE_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/res/ohosTest/resources/base/profile",
-          "ETS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/cache/ohosTest/ohosTest@OhosTestCompileArkTS/esmodule",
-          "JS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/cache/ohosTest/ohosTest@OhosTestCompileJS/jsbundle",
-          "WORKER_LOADER": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/loader/ohosTest/loader.json",
-          "MANIFEST_JSON": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/manifest/ohosTest",
-          "OUTPUT_METADATA_JSON": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/hap_metadata/ohosTest/output_metadata.json",
-          "SOURCE_MAP_DIR": "/Users/wangboyang/Documents/ai_interview_success/entry/build/default/intermediates/source_map/ohosTest"
+          "OUTPUT_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/outputs/ohosTest",
+          "INTERMEDIA_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/loader_out/ohosTest",
+          "JS_LITE_ASSETS_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/loader_out_lite/ohosTest",
+          "RES_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/res/ohosTest",
+          "RES_PROFILE_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/res/ohosTest/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/cache/ohosTest/ohosTest@OhosTestCompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/cache/ohosTest/ohosTest@OhosTestCompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/loader/ohosTest/loader.json",
+          "MANIFEST_JSON": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/manifest/ohosTest",
+          "OUTPUT_METADATA_JSON": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/hap_metadata/ohosTest/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/wangboyang/Documents/ai_interview_success/phone/build/default/intermediates/source_map/ohosTest"
         },
         "BUILD_OPTION": {
           "debuggable": true
@@ -120,8 +120,8 @@
     },
     "MODULES": [
       {
-        "name": "entry",
-        "srcPath": "/Users/wangboyang/Documents/ai_interview_success/entry",
+        "name": "phone",
+        "srcPath": "/Users/wangboyang/Documents/ai_interview_success/phone",
         "targets": [
           {
             "name": "default",
@@ -140,13 +140,13 @@
             "name": "default",
             "type": "HarmonyOS",
             "material": {
-              "certpath": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.cer",
+              "certpath": "C:\\Users\\yjh\\.ohos\\config\\default_ai_interview_success_OW24KrI8DLnIgCplvOMIaURDNIWwMvUdtJivPxuP6Yc=.cer",
               "keyAlias": "debugKey",
-              "keyPassword": "0000001B2AB7B480B65C98D4193C926E6044634F9D1E104078DA97727B1030D91594F073959034F8DC6AB5",
-              "profile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p7b",
+              "keyPassword": "0000001BB8EC8CA3CD6B061C12D327E74712D1626CBBE1EDC3F2D2FC1A806D8599180019F2A876A924D870",
+              "profile": "C:\\Users\\yjh\\.ohos\\config\\default_ai_interview_success_OW24KrI8DLnIgCplvOMIaURDNIWwMvUdtJivPxuP6Yc=.p7b",
               "signAlg": "SHA256withECDSA",
-              "storeFile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p12",
-              "storePassword": "0000001B979B55FE4C0B4C6D46FBB2E7EDFC556E066479DC2F0AEDCF704C9FCE36CFA9E83692181AC1AB78"
+              "storeFile": "C:\\Users\\yjh\\.ohos\\config\\default_ai_interview_success_OW24KrI8DLnIgCplvOMIaURDNIWwMvUdtJivPxuP6Yc=.p12",
+              "storePassword": "0000001B39AF092C7131CEA612AD94BC7B69D233861E95D582293C5E1CC78CD77F00457B47408A1966A520"
             }
           }
         ],
@@ -176,8 +176,8 @@
       },
       "modules": [
         {
-          "name": "entry",
-          "srcPath": "./entry",
+          "name": "phone",
+          "srcPath": "./phone",
           "targets": [
             {
               "name": "default",
