@@ -4,6 +4,8 @@ import { HMSkeleton, HMSkeletonItem } from "../commons/components/HMSkeleton";
 import { HMTag } from "../commons/components/HMTag";
 import { hmHttp, hmLogger } from "../commons/utils";
 import { QuestionType } from "../models";
+import emitter from "@ohos.events.emitter";
+import { GlobalVariable } from "../commons/constants";
 
 interface Res {
   code: number
@@ -22,6 +24,7 @@ export struct HomeCategory {
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
+    emitter.on(GlobalVariable.LOGIN_EVENT, ()=> this.getQuestionTypeList()) // 监听登录状态发生变化重新请求接口
   }
 
   /**

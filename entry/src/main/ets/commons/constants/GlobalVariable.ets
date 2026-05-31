@@ -3,4 +3,5 @@ export class GlobalVariable {
   static readonly SAFE_TOP_HEIGHT = 'topHeight'
   static readonly SAFE_BOTTOM_HEIGHT = 'bottomHeight'
   static readonly USER_KEY = 'user_login_key'
+  static readonly LOGIN_EVENT = 'login_event'
 }

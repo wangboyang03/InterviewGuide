@@ -3,6 +3,7 @@ import { GlobalVariable } from '../commons/constants'
 import { HMAuth } from '../commons/utils/HMAuth'
 import { hmHttp } from '../commons/utils/HMHttp'
 import { LoginParams, User } from '../models'
+import emitter from '@ohos.events.emitter'
 
 @Entry
 @Component
@@ -45,6 +46,7 @@ struct LoginPage {
       // AppStorage.setOrCreate<User>(GlobalVariable.USER_KEY,result) // 存储用户信息到全局
       HMAuth.getInstance().setUser(result) // 持久化存储用户信息
       this.getUIContext().getRouter().back() // 返回
+      emitter.emit(GlobalVariable.LOGIN_EVENT) // 发送广播通知刷新数据
     } catch (error) {
       // 日志.
       this.getUIContext().getPromptAction().showToast({message: '请检查用户名和密码是否匹配'})
