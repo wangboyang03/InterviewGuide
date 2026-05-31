@@ -1,1 +1,1 @@
-export * from './HomePageCategory'
+export * from './Category'
