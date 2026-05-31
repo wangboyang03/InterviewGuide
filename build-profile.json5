@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\yjh\\.ohos\\config\\default_ai_interview_success_OW24KrI8DLnIgCplvOMIaURDNIWwMvUdtJivPxuP6Yc=.cer",
+          "certpath": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BB8EC8CA3CD6B061C12D327E74712D1626CBBE1EDC3F2D2FC1A806D8599180019F2A876A924D870",
-          "profile": "C:\\Users\\yjh\\.ohos\\config\\default_ai_interview_success_OW24KrI8DLnIgCplvOMIaURDNIWwMvUdtJivPxuP6Yc=.p7b",
+          "keyPassword": "0000001B17E3C174FD02DBC82CFBAF1542DBBC22116FDDE2216C4E756D1747F033F29C4259A6790D3CDA20",
+          "profile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\yjh\\.ohos\\config\\default_ai_interview_success_OW24KrI8DLnIgCplvOMIaURDNIWwMvUdtJivPxuP6Yc=.p12",
-          "storePassword": "0000001B39AF092C7131CEA612AD94BC7B69D233861E95D582293C5E1CC78CD77F00457B47408A1966A520"
+          "storeFile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p12",
+          "storePassword": "0000001B46DC8A15F3F8CB5A36D8E0D5E1FC7A1663140D36F6E84855CBF95F72BFB7B4D41F33BD41E0173A"
         }
       }
     ],

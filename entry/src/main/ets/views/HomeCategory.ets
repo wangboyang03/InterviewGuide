@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "@ohos/axios";
 import { HMFilterButton, HMQuestionItem, HMQuestionList } from "../commons/components";
+import { HMSkeleton, HMSkeletonItem } from "../commons/components/HMSkeleton";
 import { HMTag } from "../commons/components/HMTag";
 import { hmHttp, hmLogger } from "../commons/utils";
 import { QuestionType } from "../models";
@@ -16,6 +17,8 @@ export struct HomeCategory {
   @State activeIndex: number = 0
   // 控制半模态弹窗的显示和隐藏
   @State isShow: boolean = false
+  // 内容是否加载完成
+  @State isLoading: boolean = false
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
@@ -25,44 +28,49 @@ export struct HomeCategory {
    * 获取分类
    */
   async getQuestionTypeList() {
+    this.isLoading = true
     const res = await hmHttp.request<QuestionType[]>({ url: 'question/type' })
     this.questionTypeList = res
+    this.isLoading = false
   }
 
   build() {
-    Stack({ alignContent: Alignment.TopEnd }) {
-      Tabs({ index: $$this.activeIndex }) {
-        ForEach(this.questionTypeList, (item: QuestionType, i) => {
-          TabContent() {
-            HMQuestionList({ typeId: item.id })
-          }
-          .tabBar(this.TabBarBuilder(item, i))
+    if (this.isLoading) {
+      this.SkeletonBuilder()
+    } else {
+      Stack({ alignContent: Alignment.TopEnd }) {
+        Tabs({ index: $$this.activeIndex }) {
+          ForEach(this.questionTypeList, (item: QuestionType, i) => {
+            TabContent() {
+              HMQuestionList({ typeId: item.id })
+            }
+            .tabBar(this.TabBarBuilder(item, i))
+          })
+        }
+        .barHeight(44)
+        .barMode(BarMode.Scrollable)
+        .scrollable(false)
+        .divider({ strokeWidth: 0.5, color: $r('app.color.common_gray_border') })
+
+        // 右侧筛选图标
+        Row() {
+          Image($r('app.media.ic_home_filter'))
+            .width(24)
+            .aspectRatio(1)
+        }
+        .width(56)
+        .height(48)
+        .justifyContent(FlexAlign.Center)
+        .linearGradient({ angle: 90, colors: [['#00FFFFFF', 0], ['#FFFFFF', 0.285]] })
+        .bindSheet($$this.isShow, this.FilterSheetBuilder(), { height: 400, showClose: false })
+        .onClick(() => {
+          this.isShow = true
         })
       }
-      .barHeight(44)
-      .barMode(BarMode.Scrollable)
-      .scrollable(false)
-      .divider({ strokeWidth: 0.5, color: $r('app.color.common_gray_border') })
-
-      // 右侧筛选图标
-      Row() {
-        Image($r('app.media.ic_home_filter'))
-          .width(24)
-          .aspectRatio(1)
-      }
-      .width(56)
-      .height(48)
-      .justifyContent(FlexAlign.Center)
-      .linearGradient({ angle: 90, colors: [['#00FFFFFF', 0], ['#FFFFFF', 0.285]] })
-      .bindSheet($$this.isShow, this.FilterSheetBuilder(), { height: 400, showClose: false })
-      .onClick(() => {
-        this.isShow = true
-      })
     }
   }
 
-  @Builder
-  TabBarBuilder(item: QuestionType, index: number) {
+  @Builder TabBarBuilder(item: QuestionType, index: number) {
     Row() {
       // 左侧
       Stack({ alignContent: Alignment.Bottom }) {
@@ -95,8 +103,7 @@ export struct HomeCategory {
   /**
    * 半模态弹层的结构
    */
-  @Builder
-  FilterSheetBuilder() {
+  @Builder FilterSheetBuilder() {
     Column() {
       Row() {
         Text('重置')
@@ -141,6 +148,37 @@ export struct HomeCategory {
     .padding(16)
     .backgroundColor($r('app.color.white'))
     .height('100%')
+  }
+
+  /**
+   * 骨架屏
+   */
+  @Builder SkeletonBuilder() {
+    HMSkeleton() {
+      Column() {
+        Row({ space: 16 }) {
+          HMSkeletonItem({ widthValue: 60 })
+          HMSkeletonItem({ widthValue: 100 })
+          HMSkeletonItem({ widthValue: 80 })
+          HMSkeletonItem({ widthValue: 40 })
+        }
+        .height(44)
+        .width('100%')
+
+        ForEach([1, 2, 3, 4, 5, 6], () => {
+          Column({ space: 10 }) {
+            HMSkeletonItem({ widthValue: '90%' })
+            HMSkeletonItem({ widthValue: '90%' })
+            HMSkeletonItem({ widthValue: '45%' })
+          }
+          .height(80)
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
+          .justifyContent(FlexAlign.Center)
+        })
+      }
+      .padding({ left: 16, right: 16 })
+    }
   }
 }
 
