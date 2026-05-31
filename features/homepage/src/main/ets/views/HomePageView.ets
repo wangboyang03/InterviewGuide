@@ -12,22 +12,25 @@ export struct HomePageView {
 
   build() {
     // Text('面试通首页')
-    Column() {
-      SearchBox() {
-        ClockSignIn({
-          clockInCount: 0
-        }) // 签到组件
-      } // 搜索框组件
+    Scroll() {
+      Column() {
+        SearchBox() {
+          ClockSignIn({
+            clockInCount: 0
+          }) // 签到组件
+        } // 搜索框组件
 
-      this.getSwiperBuilder() // 轮播图
+        this.getSwiperBuilder() // 轮播图
 
-      this.getQuestionBuilder() // 试题分类
+        this.getQuestionBuilder() // 试题分类
+      }
+      .width("100%")
+      .height("100%")
+      .padding({
+        top: this.topHeight
+      })
     }
-    .width("100%")
-    .height("100%")
-    .padding({
-      top: this.topHeight
-    })
+    .scrollBar(BarState.Off)
   }
 
   /**

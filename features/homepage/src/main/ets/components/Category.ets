@@ -1,5 +1,5 @@
+import { QuestionList } from "."
 import { QuestionType } from "../models"
-import { QuestionItemComponent } from "./QuestionItem"
 
 @Component
 export struct HomePageCategory {
@@ -18,22 +18,7 @@ export struct HomePageCategory {
     Tabs() {
       ForEach(this.list, (item: QuestionType) => {
         TabContent() {
-          Scroll() {
-            Column() {
-              ForEach(Array.from(Array(100)), () => {
-                QuestionItemComponent({
-                  item: {
-                    id: "1",
-                    stem: "1+2=?",
-                    difficulty: 5,
-                    likeCount: 80,
-                    views: 199,
-                    readFlag: 0
-                  }
-                })
-              })
-            }
-          }
+          QuestionList() // 试题列表组件
         }
         .tabBar(
           // 滚动跟随的模式
