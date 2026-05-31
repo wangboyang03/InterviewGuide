@@ -3,6 +3,7 @@ import { router } from '@kit.ArkUI'
 import { GlobalVariable } from '../commons/constants'
 import { hmStatusBar } from '../commons/utils/HMStatusBar'
 import { User } from '../models'
+import { HMTools } from '../commons/utils/HMTools'
 
 interface Nav {
   icon: ResourceStr
@@ -91,7 +92,7 @@ export struct MinePage {
         this.navBuilder({
           icon: $r('app.media.ic_mine_study'),
           name: '累计学时',
-          other: '10小时',
+          other: HMTools.getInstance().formatTimerTool(this.user.totalTime),
           onClick: () => {
             // TODO
           }

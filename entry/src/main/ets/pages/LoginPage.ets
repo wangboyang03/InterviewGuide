@@ -1,5 +1,6 @@
 import { HMNavigationBar } from '../commons/components/HMNavigationBar'
 import { GlobalVariable } from '../commons/constants'
+import { HMAuth } from '../commons/utils/HMAuth'
 import { hmHttp } from '../commons/utils/HMHttp'
 import { LoginParams, User } from '../models'
 
@@ -41,7 +42,8 @@ struct LoginPage {
           password: this.password
         } as LoginParams
       })
-      AppStorage.setOrCreate<User>(GlobalVariable.USER_KEY,result) // 存储用户信息到全局
+      // AppStorage.setOrCreate<User>(GlobalVariable.USER_KEY,result) // 存储用户信息到全局
+      HMAuth.getInstance().setUser(result) // 持久化存储用户信息
       this.getUIContext().getRouter().back() // 返回
     } catch (error) {
       // 日志.

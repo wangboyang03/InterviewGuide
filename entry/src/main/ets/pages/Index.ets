@@ -1,9 +1,12 @@
 import { GlobalVariable } from '../commons/constants'
+import { HMAuth } from '../commons/utils/HMAuth'
 import { TabItem } from '../models'
 import { HomePage } from './HomePage'
 import { InterviewPage } from './InterviewPage'
 import { MinePage } from './MinePage'
 import { ProjectPage } from './ProjectPage'
+
+HMAuth.getInstance().initUser() // 初始化持久化存储
 
 @Entry
 @Component
