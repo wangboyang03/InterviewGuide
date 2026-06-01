@@ -1,5 +1,5 @@
-import { BasicTool, ClockSignIn, Constants, PAGE_PATH, StatusManager } from "basic"
-import { NavigationResponse, Tool, UserResponse } from "../models"
+import { BasicTool, ClockSignIn, Constants, PAGE_PATH, StatusManager, UserResponse } from "basic"
+import { NavigationResponse, Tool } from "../models"
 
 @Component
 export struct MineView {

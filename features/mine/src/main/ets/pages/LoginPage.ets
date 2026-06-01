@@ -1,4 +1,4 @@
-import { Auth, Constants, LoginRequest, NavigationBar, NetworkUtil, UserResponse } from 'basic'
+import { Auth, Constants, Logger, LoginRequest, NavigationBar, NetworkUtil, UserResponse } from 'basic'
 import emitter from '@ohos.events.emitter'
 
 @Entry
@@ -13,7 +13,7 @@ struct LoginPage {
     if (this.loggingIn) {
       return;
     }
-    if (this.username.trim() || this.password.trim()) {
+    if (!this.username.trim() || !this.password.trim()) {
       this.getUIContext().getPromptAction().showToast({ message: '用户名或密码不能为空' })
       return;
     }
@@ -37,7 +37,7 @@ struct LoginPage {
       emitter.emit(Constants.LOGIN_EVENT) // 登录成功发送首页数据刷新事件
       this.getUIContext().getRouter().back()
     } catch (error) {
-      // 日志。
+      Logger.log(error)
     } finally {
       this.loggingIn = false
     }
