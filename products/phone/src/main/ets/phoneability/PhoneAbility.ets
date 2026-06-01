@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { ScreenManager, StatusManager } from 'basic';
+import { Auth, ScreenManager, StatusManager } from 'basic';
 
 const DOMAIN = 0x0000;
 
@@ -28,6 +28,7 @@ export default class PhoneAbility extends UIAbility {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
       }
+      Auth.getInstance().initUser() // 初始化用户信息
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
     });
   }

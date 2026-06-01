@@ -1,5 +1,4 @@
-import { Constants, NavigationBar, NetworkUtil } from 'basic'
-import { LoginRequest, UserResponse } from '../models'
+import { Auth, Constants, LoginRequest, NavigationBar, NetworkUtil, UserResponse } from 'basic'
 
 @Entry
 @Component
@@ -32,7 +31,8 @@ struct LoginPage {
           password: this.password
         }
       })
-      AppStorage.setOrCreate<UserResponse>(Constants.USER_STORAGE_KEY, user)
+      // AppStorage.setOrCreate<UserResponse>(Constants.USER_STORAGE_KEY, user) // 存储用户信息
+      Auth.getInstance().setUser(user) // 持久化用户信息
       this.getUIContext().getRouter().back()
     } catch (error) {
       // 日志。
