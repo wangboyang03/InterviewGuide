@@ -1,11 +1,12 @@
 import { Constants, NetworkUtil } from "basic"
-import { QuestionListComponent } from "."
+import { FilterButton, QuestionListComponent } from "."
 import { QuestionType } from "../models"
 
 @Component
 export struct HomePageCategory {
   @State QuestionTypeList: QuestionType[] = [] // 数据源
   @State isShowSheet: boolean = false // 显示筛选半模态
+  @State filterDataIndex: number = 0 // 过滤分类 默认选中第一个
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
@@ -80,10 +81,20 @@ export struct HomePageCategory {
       .margin({ bottom: 4, top: 4 })
 
       Text('题目排序').textTitle()
-      // TODO 筛选按钮
+      Flex() {
+        FilterButton({ label: '默认' })
+        FilterButton({ label: '浏览量', isSort: true })
+        FilterButton({ label: '难度', isSort: true })
+        FilterButton({ label: '推荐' })
+      }
 
       Text('选择分类').textTitle()
-      // TODO 筛选按钮
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(this.QuestionTypeList, (item: QuestionType, index) => {
+          FilterButton({ label: item.name, isSetBadge: item.displayNewestFlag == 1, selected: this.filterDataIndex == index })
+            .onClick(()=> this.filterDataIndex = index)
+        })
+      }
     }
     .width('100%')
     .height('100%')

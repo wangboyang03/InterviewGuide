@@ -1,14 +1,15 @@
 @Component
 export struct FilterButton {
   @Prop label: string;
-  @Prop isSetBadge: boolean;
-  @Prop isSort: boolean;
+  @Prop isSetBadge: boolean = false;
+  @Prop isSort: boolean = false;
+  @Prop selected: boolean = false;
 
   build() {
     Row() {
       Text(this.label)
         .fontSize(12)
-        .fontColor($r('app.color.black'))
+        .fontColor(this.selected ? $r('app.color.common_main_color') : $r('app.color.black'))
       if (this.isSetBadge) {
         Image($r('app.media.ic_home_new'))
           .width(32)
