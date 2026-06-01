@@ -1,5 +1,5 @@
 import { Constants, NetworkUtil } from "basic"
-import { QuestionList } from "."
+import { QuestionListComponent } from "."
 import { QuestionType } from "../models"
 
 @Component
@@ -22,7 +22,7 @@ export struct HomePageCategory {
     Tabs() {
       ForEach(this.QuestionTypeList, (item: QuestionType) => {
         TabContent() {
-          QuestionList() // 试题列表组件
+          QuestionListComponent({typeId: item.id}) // 试题列表组件
         }
         .tabBar(
           // 滚动跟随的模式
