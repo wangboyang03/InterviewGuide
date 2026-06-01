@@ -1,4 +1,4 @@
-import { ClockSignIn, Constants, PAGE_PATH, StatusManager } from "basic"
+import { BasicTool, ClockSignIn, Constants, PAGE_PATH, StatusManager } from "basic"
 import { NavigationResponse, Tool, UserResponse } from "../models"
 
 @Component
@@ -72,7 +72,7 @@ export struct MineView {
         this.navigationBuilder({
           icon: $r('app.media.ic_mine_study'),
           name: '累计学时',
-          other: '10小时',
+          other: BasicTool.getInstance().formatTimeFromSeconds(this.user.totalTime),
           onClick: () => {
             // TODO
           }
