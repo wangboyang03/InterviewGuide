@@ -1,4 +1,5 @@
 import { Auth, Constants, LoginRequest, NavigationBar, NetworkUtil, UserResponse } from 'basic'
+import emitter from '@ohos.events.emitter'
 
 @Entry
 @Component
@@ -33,6 +34,7 @@ struct LoginPage {
       })
       // AppStorage.setOrCreate<UserResponse>(Constants.USER_STORAGE_KEY, user) // 存储用户信息
       Auth.getInstance().setUser(user) // 持久化用户信息
+      emitter.emit(Constants.LOGIN_EVENT) // 登录成功发送首页数据刷新事件
       this.getUIContext().getRouter().back()
     } catch (error) {
       // 日志。

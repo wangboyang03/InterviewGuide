@@ -1,6 +1,7 @@
 import { Constants, NetworkUtil } from "basic"
 import { FilterButton, QuestionListComponent } from "."
 import { QuestionType, SortType } from "../models"
+import emitter from "@ohos.events.emitter"
 
 @Component
 export struct HomePageCategory {
@@ -13,6 +14,9 @@ export struct HomePageCategory {
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
+    emitter.on(Constants.LOGIN_EVENT, () => {
+      this.getQuestionTypeList()
+    })
   }
 
   async getQuestionTypeList() {

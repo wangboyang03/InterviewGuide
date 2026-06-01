@@ -2,8 +2,9 @@
  * 基于axios封装的http请求工具类
  */
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios'
-import { Logger } from '../../../../Index'
+import { Auth, Logger, PAGE_PATH, UserResponse } from '../../../../Index'
 import { Constants } from '../Constants'
+import { router } from '@kit.ArkUI'
 
 // 1.创建axios实例对象
 const instance = axios.create({
@@ -30,6 +31,11 @@ instance.interceptors.response.use((res: AxiosResponse) => {
   // 请求成功 业务失败
   return Promise.reject(res.data)
 }, (error: AxiosError) => {
+  if (error.response?.status == 401) {
+    Auth.getInstance().setUser({} as UserResponse) // 清空磁盘的用户信息
+    // 跳转到登录页面
+    router.pushUrl({ url: PAGE_PATH.LOGIN_PAGE }, router.RouterMode.Single)
+  }
   Logger.error(error)
   return Promise.reject(error)
 })
