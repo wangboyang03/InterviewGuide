@@ -1,22 +1,23 @@
 import { ClockSignIn, Constants, PAGE_PATH, StatusManager } from "basic"
-import { NavigationResponse, Tool } from "../models"
+import { NavigationResponse, Tool, UserResponse } from "../models"
 
 @Component
 export struct MineView {
   @StorageProp(Constants.SAFE_TOP_HEIGHT_KEY) topHeight: number = 0
+  @StorageProp(Constants.USER_STORAGE_KEY) user: UserResponse = {} as UserResponse
 
   build() {
     Column({ space: 16 }) {
       Row({ space: 12 }) {
-        Image($r('app.media.ic_mine_avatar'))
+        Image(this.user.avatar ?? $r('app.media.ic_mine_avatar'))
           .alt($r('app.media.ic_mine_avatar'))
           .width(55)
           .aspectRatio(1)
           .borderRadius(55)
         // 是否登录
-        if (false) {
+        if (!!this.user.token) {
           Column({ space: 4 }) {
-            Text('用户名')
+            Text(this.user.nickName ?? this.user.username)
               .fontSize(18)
               .fontWeight(500)
               .maxLines(1)
@@ -46,7 +47,7 @@ export struct MineView {
               })
             })
         }
-        ClockSignIn({ clockInCount: 1 })
+        ClockSignIn({ clockInCount: this.user.clockinNumbers })
       }
       .width('100%')
       .height(100)

@@ -5,6 +5,7 @@ export class Constants {
   static readonly DARK_COLOR: string = "#000000" // 暗色
   static readonly BUNDLE_NAME: string = "com.taobao.interview_success_ai" // 包名
   static readonly MINE_MODULE: string = "mine" // 我的模块
+  static readonly USER_STORAGE_KEY: string = "user_cip"
 
   // 网络相关
   static readonly BASE_URL = 'https://api-harmony-teach.itheima.net/hm/' // 基地址

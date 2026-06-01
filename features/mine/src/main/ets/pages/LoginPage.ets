@@ -1,4 +1,5 @@
-import { NavigationBar } from 'basic'
+import { Constants, NavigationBar, NetworkUtil } from 'basic'
+import { LoginRequest, UserResponse } from '../models'
 
 @Entry
 @Component
@@ -6,7 +7,39 @@ struct LoginPage {
   @State username: string = 'hmheima'
   @State password: string = 'Hmheima%123'
   @State isAgree: boolean = false
-  @State loading: boolean = false
+  @State loggingIn: boolean = false
+
+  async Login() {
+    if (this.loggingIn) {
+      return;
+    }
+    if (this.username.trim() || this.password.trim()) {
+      this.getUIContext().getPromptAction().showToast({ message: '用户名或密码不能为空' })
+      return;
+    }
+    if (!this.isAgree) {
+      this.getUIContext().getPromptAction().showToast({ message: '请勾选已阅读协议并同意' })
+      return;
+    }
+    // 前端校验完毕 可以登陆了
+    try {
+      this.loggingIn = true
+      const user = await NetworkUtil.getInstance().request<UserResponse, LoginRequest>({
+        url: Constants.LOGIN,
+        method: 'post',
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      })
+      AppStorage.setOrCreate<UserResponse>(Constants.USER_STORAGE_KEY, user)
+      this.getUIContext().getRouter().back()
+    } catch (error) {
+      // 日志。
+    } finally {
+      this.loggingIn = false
+    }
+  }
 
   build() {
     Column() {
@@ -58,15 +91,14 @@ struct LoginPage {
 
         Button({ type: ButtonType.Normal }) {
           Row() {
-            if (this.loading) {
+            if (this.loggingIn) {
               LoadingProgress()
                 .color($r('app.color.white'))
                 .width(24)
                 .height(24)
                 .margin({ right: 10 })
             }
-            Text('立即登录')
-              .fontColor($r('app.color.white'))
+            Text('立即登录').fontColor($r('app.color.white')).onClick(() => this.Login())
           }
         }
         .width('100%')
