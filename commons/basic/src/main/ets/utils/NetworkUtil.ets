@@ -15,6 +15,11 @@ const instance = axios.create({
 // 3.请求拦截器
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // 获取用户信息 并携带token
+    const user = Auth.getInstance().getUser()
+    if (user?.token) {
+      config.headers.Authorization = `Bearer ${user.token}`
+    }
     return config
   },
   (error: AxiosError) => {
