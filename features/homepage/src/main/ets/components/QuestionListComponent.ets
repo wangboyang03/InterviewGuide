@@ -9,7 +9,7 @@ export struct QuestionListComponent {
   @State loading: boolean = false // 正在加载数据
   @State isFinished: boolean = true // 全部加载完毕
   @Prop typeId: number // 试题ID
-  @Prop sort: SortType = SortType.Default // 排序方式 默认
+  @Prop @Watch('onChangeSort') sort: SortType = SortType.Default // 排序方式 默认
   @State page: number = 1
   @State questionList: QuestionItem[] = [] // 试题列表
 
@@ -68,6 +68,10 @@ export struct QuestionListComponent {
     this.getUIContext().getPromptAction().showToast({ message: '刷新完成' })
   }
 
+  onChangeSort() {
+    this.refreshing = true
+  }
+
   aboutToAppear(): void {
     this.onLoad()
   }
@@ -88,6 +92,7 @@ export struct QuestionListComponent {
         startMargin: 16,
         endMargin: 16
       })
+      .edgeEffect(EdgeEffect.None)
       .scrollBar(BarState.Off)
       .onReachEnd(async () => {
         if (!this.loading && !this.isFinished) {
@@ -100,14 +105,15 @@ export struct QuestionListComponent {
         scrollForward: NestedScrollMode.PARENT_FIRST, // 向上滚动 父组件优先
         scrollBackward: NestedScrollMode.SELF_FIRST // 向下滚动 子组件优先
       })
+      .onReachEnd(() => {
+        if (this.refreshing || this.loading || this.isFinished) {
+          // 边界判断
+          return;
+        }
+        this.loading = true
+        this.onLoad()
+      })
     }
-    .onStateChange((state) => {
-      this.refreshState = state // 当前状态
-      if (this.refreshState == RefreshStatus.Refresh) {
-        // 执行刷新逻辑
-        this.refreshing = false // 刷新完成
-      }
-    })
     .onRefreshing(()=> this.onRefresh()) // 下拉刷新
   }
 

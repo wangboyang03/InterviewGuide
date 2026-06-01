@@ -8,6 +8,8 @@ export struct HomePageCategory {
   @State isShowSheet: boolean = false // 显示筛选半模态
   @State filterDataIndex: number = 0 // 过滤分类 默认选中第一个
   @State filterDataSort: SortType = SortType.Default // 过滤排序 默认选中默认
+  @State activatedIndex: number = 0 // 试题分类TabBar选中索引 默认第一个
+  @State Sort: SortType = SortType.Default // 排序方式 默认
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
@@ -23,41 +25,60 @@ export struct HomePageCategory {
 
   build() {
     Stack({alignContent: Alignment.TopEnd}) {
-      Tabs() {
-        ForEach(this.QuestionTypeList, (item: QuestionType) => {
+      Tabs({index: $$this.activatedIndex}) {
+        ForEach(this.QuestionTypeList, (item: QuestionType, index) => {
           TabContent() {
-            QuestionListComponent({typeId: item.id}) // 试题列表组件
+            QuestionListComponent({typeId: item.id, sort: this.Sort}) // 试题列表组件
           }
-          .tabBar(
-            // 滚动跟随的模式
-            new SubTabBarStyle(item.name)
-              .indicator({
-                color: $r("app.color.black"),
-                width: 24,
-                height: 4,
-                borderRadius: 2
-              })
-              .labelStyle({
-                selectedColor: $r("app.color.black"),
-                unselectedColor: $r("app.color.common_gray_01")
-              })
-          )
+          .tabBar(this.TabBarBuilder(item, index))
         })
-      }.barMode(BarMode.Scrollable) // 允许页签左右滑动
+      }
+      .barHeight(44)
+      .barMode(BarMode.Scrollable) // 允许页签左右滑动
+      .scrollable(false)
+      .divider({ strokeWidth: 0.5, color: $r('app.color.common_gray_border') })
+
       Row() {
         Image($r('app.media.ic_home_filter'))
           .width(24)
           .aspectRatio(1)
       }
-      .height(56)
+      .height(44)
       .justifyContent(FlexAlign.Center)
       .linearGradient({ angle: 90, colors: [['#00FFFFFF', 0], ['#FFFFFF', 0.285]] })
       .bindSheet($$this.isShowSheet, this.FilterSheetBuilder(), {
         showClose: false,
         height: 500
       })
-      .onClick(() => this.isShowSheet = true)
+      .onClick(() => {
+        this.isShowSheet = true
+        this.filterDataIndex = this.activatedIndex
+      })
     }
+  }
+
+  @Builder TabBarBuilder(item: QuestionType, index: number) {
+    Row() {
+      Stack({ alignContent: Alignment.Bottom }){
+        Text(item.name)
+          .fontSize(15)
+          .fontColor(this.activatedIndex == index ? $r('app.color.black') : $r('app.color.common_gray_01'))
+          .height(44)
+        Text()
+          .width(this.activatedIndex == index ? 20 : 0)
+          .height(2)
+          .backgroundColor($r('app.color.black'))
+          .animation({ duration: 300 })
+      }
+      if (item.displayNewestFlag == 1) {
+        Image($r('app.media.ic_home_new'))
+          .width(32)
+          .height(14)
+          .objectFit(ImageFit.Contain)
+          .margin({ left: 4 })
+      }
+    }
+    .padding({ left: 16, right: this.QuestionTypeList.length == index + 1 ? 16 : 0 })
   }
 
   // 半模态容器
@@ -68,6 +89,10 @@ export struct HomePageCategory {
           .fontSize(16)
           .fontWeight(500)
           .fontColor($r('app.color.common_gray_03'))
+          .onClick(() => {
+            this.filterDataIndex = 0
+            this.filterDataSort = SortType.Default
+          })
         Text('筛选题目')
           .layoutWeight(1)
           .fontSize(18)
@@ -78,6 +103,11 @@ export struct HomePageCategory {
           .fontWeight(500)
           .fontSize(16)
           .fontColor($r('app.color.common_main_color'))
+          .onClick(() => {
+            this.isShowSheet = false
+            this.activatedIndex = this.filterDataIndex
+            this.Sort = this.filterDataSort
+          })
       }
       .margin({ bottom: 4, top: 4 })
 
