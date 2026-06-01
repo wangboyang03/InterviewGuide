@@ -1,12 +1,13 @@
 import { Constants, NetworkUtil } from "basic"
 import { FilterButton, QuestionListComponent } from "."
-import { QuestionType } from "../models"
+import { QuestionType, SortType } from "../models"
 
 @Component
 export struct HomePageCategory {
   @State QuestionTypeList: QuestionType[] = [] // 数据源
   @State isShowSheet: boolean = false // 显示筛选半模态
   @State filterDataIndex: number = 0 // 过滤分类 默认选中第一个
+  @State filterDataSort: SortType = SortType.Default // 过滤排序 默认选中默认
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
@@ -82,10 +83,24 @@ export struct HomePageCategory {
 
       Text('题目排序').textTitle()
       Flex() {
-        FilterButton({ label: '默认' })
-        FilterButton({ label: '浏览量', isSort: true })
-        FilterButton({ label: '难度', isSort: true })
-        FilterButton({ label: '推荐' })
+        FilterButton({ label: '默认', selected: this.filterDataSort == SortType.Default }).onClick(() => this.filterDataSort = SortType.Default)
+        FilterButton({ label: '浏览量', isSort: true, selected: (this.filterDataSort == SortType.ViewLow || this.filterDataSort == SortType.ViewHigh), sort: this.filterDataSort })
+          .onClick(() => {
+            if (this.filterDataSort == SortType.ViewLow || this.filterDataSort == SortType.ViewHigh) {
+              this.filterDataSort = this.filterDataSort == SortType.ViewLow ? SortType.ViewHigh : SortType.ViewLow // 选中默认是降序 此时是降序就赋为升序
+            } else {
+              this.filterDataSort = SortType.ViewLow
+            }
+          })
+        FilterButton({ label: '难度', isSort: true, selected: (this.filterDataSort == SortType.DifficultyLow || this.filterDataSort == SortType.DifficultyHigh), sort: this.filterDataSort })
+          .onClick(() => {
+            if (this.filterDataSort == SortType.DifficultyLow || this.filterDataSort == SortType.DifficultyHigh) {
+              this.filterDataSort = this.filterDataSort == SortType.DifficultyLow ? SortType.DifficultyHigh : SortType.DifficultyLow // 选中默认是降序 此时是降序就赋为升序
+            } else {
+              this.filterDataSort = SortType.DifficultyLow
+            }
+          })
+        FilterButton({ label: '推荐', selected: this.filterDataSort == SortType.Commend }).onClick(() => this.filterDataSort = SortType.Commend)
       }
 
       Text('选择分类').textTitle()

@@ -1,9 +1,12 @@
+import { SortType } from "../models/question";
+
 @Component
 export struct FilterButton {
   @Prop label: string;
   @Prop isSetBadge: boolean = false;
   @Prop isSort: boolean = false;
   @Prop selected: boolean = false;
+  @Prop sort: SortType = SortType.Default;
 
   build() {
     Row() {
@@ -21,8 +24,10 @@ export struct FilterButton {
         Column() {
           Image($r('sys.media.ohos_ic_public_arrow_up'))
             .size({ width: 12, height: 6 })
+            .fillColor(this.selected && this.sort % 2 == 1 ? $r('app.color.common_main_color') : $r('app.color.black'))
           Image($r('sys.media.ohos_ic_public_arrow_down'))
             .size({ width: 12, height: 6 })
+            .fillColor(this.selected && this.sort % 2 == 0 ? $r('app.color.common_main_color') : $r('app.color.black'))
         }
         .margin({ top: -0.5, left: 2 })
       }
