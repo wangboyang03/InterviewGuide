@@ -14,6 +14,7 @@ export class Constants {
   static readonly QUESTION_TYPE = 'question/type' // 试题类型接口
   static readonly QUESTION_LIST = 'question/list' // 试题列表接口
   static readonly LOGIN = 'login' // 登录接口
+  static readonly REFRESH_TOKEN = 'refreshToken' // 刷新token接口
 }
 
 export class PAGE_PATH {
