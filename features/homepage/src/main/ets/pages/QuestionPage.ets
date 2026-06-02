@@ -1,6 +1,7 @@
 import { CategoryTag, Constants, NavigationBar, NetworkUtil } from 'basic'
 import { QuestionDetail, QuestionPageResponse } from '../models/question'
 import { webview } from '@kit.ArkWeb'
+import { CustomLoadingDialog } from '../components/CustomLoadingDialog'
 
 @Entry
 @Component
@@ -8,15 +9,22 @@ struct QuestionPage {
   @StorageProp(Constants.SAFE_BOTTOM_HEIGHT_KEY) bottomHeight: number = 0
   @State currentItem: QuestionDetail = {} as QuestionDetail
   controller: WebviewController = new webview.WebviewController()
+  loadingDialog = new CustomDialogController({
+    builder: CustomLoadingDialog(),
+    customStyle: true, // 打开自定义样式
+    alignment: DialogAlignment.Center // 居中显示
+  })
 
   /**
    * 获取当前试题详情数据
    * @param id 试题id
    */
   async getCurrentQuestionData(id: string) {
+    this.loadingDialog.open()
     const result = await NetworkUtil.getInstance().request<QuestionDetail>({
       url: `${Constants.QUESTION_DETAIL}${id}`
     })
+    this.loadingDialog.close()
     return result;
   }
 
