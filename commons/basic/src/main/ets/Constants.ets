@@ -3,10 +3,13 @@ export class Constants {
   static readonly SAFE_BOTTOM_HEIGHT_KEY = 'safe_bottom_height'
   static readonly LIGHT_COLOR: string = "#ffffff" // 白色
   static readonly DARK_COLOR: string = "#000000" // 暗色
+  static readonly USER_STORAGE_KEY: string = "user_cip" // 用户信息存储key
+  static readonly LOGIN_EVENT: string = "loginEvent" // 登录成功发生请求的事件名
+
+  // 模块相关
   static readonly BUNDLE_NAME: string = "com.taobao.interview_success_ai" // 包名
   static readonly MINE_MODULE: string = "mine" // 我的模块
-  static readonly USER_STORAGE_KEY: string = "user_cip"
-  static readonly LOGIN_EVENT: string = "loginEvent"
+  static readonly HOMEPAGE_MODULE: string = "homepage" // 首页模块
 
   // 网络相关
   static readonly BASE_URL = 'https://api-harmony-teach.itheima.net/hm/' // 基地址
@@ -20,6 +23,6 @@ export class Constants {
 
 export class PAGE_PATH {
   static readonly LOGIN_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/LoginPage`
-  static readonly QUESTION_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/QuestionPage`
+  static readonly QUESTION_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/QuestionPage`
   static readonly WEB_VIEW_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/WebPage`
 }

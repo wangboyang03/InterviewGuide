@@ -1,5 +1,5 @@
 import { Auth, Constants, Logger, NetworkUtil, PAGE_PATH } from "basic"
-import { PageData, QuestionItem, QuestionListRequest, SortType } from "../models"
+import { PageData, QuestionItem, QuestionListRequest, QuestionPageResponse, SortType } from "../models"
 import { QuestionItemComponent } from "./QuestionItemComponent"
 
 @Component
@@ -86,7 +86,10 @@ export struct QuestionListComponent {
           ListItem() {
             QuestionItemComponent({item: item}).onClick(() => {
               Auth.getInstance().checkAuth({
-                url: PAGE_PATH.QUESTION_PAGE
+                url: PAGE_PATH.QUESTION_PAGE,
+                params: {
+                  item
+                } as QuestionPageResponse
               })
             })
           }

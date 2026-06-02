@@ -17,6 +17,17 @@ export interface QuestionItem {
   readFlag: 0 | 1; // 是否看过 0没有 1已读
 }
 
+export interface QuestionDetail extends QuestionItem {
+  answer: string // 答案
+  collectFlag: 0 | 1 // 0取消收藏 1收藏
+  likeFlag: 0 | 1 // 0取消点赞 1点赞
+  stage: string[] // 所属类别 用于渲染标签
+}
+
+export interface QuestionPageResponse {
+  item: QuestionDetail // 跳转到题目详情页用的题目数据集合
+}
+
 export interface PageData<T> {
   total: number
   pageTotal: number

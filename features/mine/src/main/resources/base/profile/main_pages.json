@@ -1,7 +1,6 @@
 {
   "src": [
     "pages/LoginPage",
-    "pages/QuestionPage",
     "pages/WebPage"
   ]
 }
