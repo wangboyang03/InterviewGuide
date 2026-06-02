@@ -1,5 +1,6 @@
 import { Auth, Constants, Logger, LoginRequest, NavigationBar, NetworkUtil, UserResponse } from 'basic'
 import emitter from '@ohos.events.emitter'
+import { WebViewResponse } from '../models'
 
 @Entry
 @Component
@@ -92,12 +93,30 @@ struct LoginPage {
           Text('用户协议')
             .fontSize(14)
             .padding({ right: 4 })
+            .onClick(() => {
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/WebPage',
+                params: {
+                  title: '用户协议',
+                  src: 'http://110.41.143.89/user'
+                } as WebViewResponse
+              })
+            })
           Text('和')
             .fontSize(14)
             .fontColor($r('app.color.common_gray_01'))
             .padding({ right: 4 })
           Text('隐私政策')
             .fontSize(14)
+            .onClick(() => {
+              this.getUIContext().getRouter().pushUrl({
+                url: 'pages/WebPage',
+                params: {
+                  title: '隐私政策',
+                  src: 'http://110.41.143.89/privacy'
+                } as WebViewResponse
+              })
+            })
         }
         .width('100%')
 

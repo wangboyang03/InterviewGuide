@@ -11,3 +11,8 @@ export interface Tool {
   value?: string
   onClick?: () => void
 }
+
+export interface WebViewResponse {
+  title: string
+  src: string
+}
