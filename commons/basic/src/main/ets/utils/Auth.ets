@@ -28,18 +28,28 @@ export class Auth {
   /**
    * 跳转鉴权
    */
-  checkAuth(options: router.RouterOptions) {
+  checkAuth(options: router.RouterOptions | Function) {
     const user = this.getUser()
     if (user?.token) {
-      router.pushUrl(options) // 直接放行跳转
+      if (typeof options == 'function') {
+        options()
+      } else {
+        router.pushUrl(options) // 直接放行跳转
+      }
     } else {
-      // 解析路由参数
-      const params = options.params as Record<string, string> ?? {}
-      params.return_url = options.url
-      router.pushUrl({
-        url: PAGE_PATH.LOGIN_PAGE,
-        params
-      })
+      if (typeof options == 'function') {
+        router.pushUrl({
+          url: PAGE_PATH.LOGIN_PAGE
+        })
+      } else {
+        // 解析路由参数
+        const params = options.params as Record<string, string> ?? {}
+        params.return_url = options.url
+        router.pushUrl({
+          url: PAGE_PATH.LOGIN_PAGE,
+          params
+        })
+      }
     }
   }
 }

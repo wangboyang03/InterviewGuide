@@ -1,3 +1,5 @@
+import { Auth } from "../utils"
+
 @Component
 export struct SearchBox {
   @Prop boxHeight: number = 32
@@ -9,6 +11,7 @@ export struct SearchBox {
       Image($r("app.media.ic_home_scan")) // 扫一扫
         .width(24)
         .aspectRatio(1)
+        .onClick(() => Auth.getInstance().checkAuth(() => this.getUIContext().getPromptAction().showToast({message:'可以扫码了'})))
       Row() {
         Image($r("app.media.ic_common_search"))
           .width(14)
