@@ -3,6 +3,7 @@ import { GlobalVariable } from '../commons/constants'
 import { QuestionDetail, QuestionPageParams } from '../models'
 import { hmHttp } from '../commons/utils/HMHttp'
 import { webview } from '@kit.ArkWeb'
+import { HMCustomDialog } from '../commons/components/HMCustomDialog'
 
 @Entry
 @Component
@@ -10,6 +11,13 @@ struct QuestionPage {
   @StorageProp(GlobalVariable.SAFE_BOTTOM_HEIGHT) bottomHeight: number = 0
   @State item: QuestionDetail = {} as QuestionDetail
   controller = new webview.WebviewController()
+  dialog = new CustomDialogController({
+    builder: HMCustomDialog({
+      label: '拼命加载中...'
+    }),
+    customStyle: true,
+    alignment: DialogAlignment.Center
+  })
 
   async aboutToAppear(): Promise<void> {
     const params = this.getUIContext().getRouter().getParams() as QuestionPageParams
@@ -25,10 +33,16 @@ struct QuestionPage {
     }
   }
 
+  onPageHide(): void {
+    this.dialog.close()
+  }
+
   async getQuestionDetail(id: string) {
+    this.dialog.open()
     const result = await hmHttp.request<QuestionDetail>({
       url: `question/${id}`
     })
+    this.dialog.close()
     return result
   }
 
