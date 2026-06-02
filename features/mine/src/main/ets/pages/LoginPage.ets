@@ -1,4 +1,4 @@
-import { Auth, Constants, Logger, LoginRequest, NavigationBar, NetworkUtil, UserResponse } from 'basic'
+import { Auth, Constants, Logger, LoginRequest, NavigationBar, NetworkUtil, PAGE_PATH, UserResponse } from 'basic'
 import emitter from '@ohos.events.emitter'
 import { WebViewResponse } from '../models'
 
@@ -95,7 +95,7 @@ struct LoginPage {
             .padding({ right: 4 })
             .onClick(() => {
               this.getUIContext().getRouter().pushUrl({
-                url: 'pages/WebPage',
+                url: PAGE_PATH.WEB_VIEW_PAGE,
                 params: {
                   title: '用户协议',
                   src: 'http://110.41.143.89/user'
@@ -110,7 +110,7 @@ struct LoginPage {
             .fontSize(14)
             .onClick(() => {
               this.getUIContext().getRouter().pushUrl({
-                url: 'pages/WebPage',
+                url: PAGE_PATH.WEB_VIEW_PAGE,
                 params: {
                   title: '隐私政策',
                   src: 'http://110.41.143.89/privacy'
