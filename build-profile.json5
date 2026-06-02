@@ -7,11 +7,11 @@
         "material": {
           "certpath": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B0A6025FCD1BC34670B17DA69904714B01DA16E6E3A31D93B046E4E58D6CE567AB08CBD308D5F87",
+          "keyPassword": "0000001B229F9D5CE2163C7A830DA1ECFF2D8292491115597FF1041F334B31768A55B807B48FF64840038C",
           "profile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "/Users/wangboyang/.ohos/config/default_ai_interview_success_YG4vTAwn3k7O9CsnB4bX6GP6MNFhnV2Uab5KHLSiLcY=.p12",
-          "storePassword": "0000001B49BADBCDB749A48E9E16D9744EBB46A43DD416004BDEF9F1114AD9C6B2808E51E8EDA3A174EFF0"
+          "storePassword": "0000001BC282C23DC8D253936A6BA50DB2CBCAC8C05CCAAE0EE32EE5CEB2718DC0DA1A32C454FE6087A47B"
         }
       }
     ],

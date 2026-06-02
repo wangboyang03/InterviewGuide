@@ -75,7 +75,8 @@ export struct HMQuestionList {
                 this.getUIContext().getRouter().pushUrl({
                   url: 'pages/QuestionPage',
                   params: {
-                    item
+                    item,
+                    list: this.list
                   } as QuestionPageParams
                 })
               })

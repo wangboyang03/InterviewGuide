@@ -89,6 +89,7 @@ export interface LoginParams {
 
 export interface QuestionPageParams {
   item: QuestionItem
+  list: QuestionItem[]
 }
 
 export interface QuestionOptionParams {
