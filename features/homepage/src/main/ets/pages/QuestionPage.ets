@@ -8,6 +8,8 @@ import { CustomLoadingDialog } from '../components/CustomLoadingDialog'
 struct QuestionPage {
   @StorageProp(Constants.SAFE_BOTTOM_HEIGHT_KEY) bottomHeight: number = 0
   @State currentItem: QuestionDetail = {} as QuestionDetail
+  @State currentList: QuestionDetail[] = [] // 接收传递过来的试题集合
+  @State currentQuestionIndex: number = 0
   controller: WebviewController = new webview.WebviewController()
   loadingDialog = new CustomDialogController({
     builder: CustomLoadingDialog(),
@@ -63,12 +65,28 @@ struct QuestionPage {
     }
   }
 
+  /**
+   * 切换试题
+   * @param step 步数
+   */
+  toggleQuestionItem(step: number) {
+    const currentIndex = this.currentQuestionIndex + step // 临时局部变量
+    if (currentIndex < 0 || currentIndex >= this.currentList.length) {
+      this.getUIContext().getPromptAction().showToast({message:'暂无更多题目'})
+      return;
+    }
+    this.currentQuestionIndex = currentIndex // 真正决定当前试题的索引
+    this.currentItem = this.currentList[this.currentQuestionIndex] // 查找切换后试题在集合中的位置并赋值
+  }
+
   async aboutToAppear(): Promise<void> {
     const params = this.getUIContext().getRouter().getParams() as QuestionPageResponse
     if (!!params) {
       // this.getUIContext().getPromptAction().showToast({message:JSON.stringify(params)})
       this.currentItem = params.item as QuestionDetail
-      this.currentItem = await this.getCurrentQuestionData(params.item.id)
+      this.currentItem = await this.getCurrentQuestionData(this.currentItem.id)
+      this.currentList = params.list as QuestionDetail[] // 接收跳转后list参数
+      this.currentQuestionIndex = this.currentList.findIndex((item) => item.id == this.currentItem.id) // 记录当前试题在集合中的位置
       this.controller.loadUrl($rawfile('question.html')) // 每次页面创建都加载一下网页渲染当前答案
     }
   }
@@ -131,19 +149,17 @@ struct QuestionPage {
           Image($r('sys.media.ohos_ic_public_arrow_left'))
             .width(20)
             .aspectRatio(1)
-            .fillColor($r('app.color.common_gray_01'))
-          Text(' ' + '上一题')
-            .fontColor($r('app.color.common_gray_01'))
-        }
+            .fillColor(this.currentQuestionIndex <= 0 ? $r('app.color.common_gray_01') : $r('app.color.common_gray_03'))
+          Text(' ' + '上一题').fontColor(this.currentQuestionIndex <= 0 ? $r('app.color.common_gray_01') : $r('app.color.common_gray_03'))
+        }.onClick(() => this.toggleQuestionItem(-1))
 
         Row() {
-          Text('下一题' + ' ')
-            .fontColor($r('app.color.common_gray_03'))
+          Text('下一题' + ' ').fontColor(this.currentQuestionIndex >= this.currentList.length -1 ? $r('app.color.common_gray_01') : $r('app.color.common_gray_03'))
           Image($r('sys.media.ohos_ic_public_arrow_right'))
             .width(20)
             .aspectRatio(1)
-            .fillColor($r('app.color.common_gray_03'))
-        }
+            .fillColor(this.currentQuestionIndex >= this.currentList.length -1 ? $r('app.color.common_gray_01') : $r('app.color.common_gray_03'))
+        }.onClick(() => this.toggleQuestionItem(1))
       }
       .height(44)
       .width('100%')

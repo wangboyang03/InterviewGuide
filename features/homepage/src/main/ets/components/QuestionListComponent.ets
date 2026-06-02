@@ -88,7 +88,8 @@ export struct QuestionListComponent {
               Auth.getInstance().checkAuth({
                 url: PAGE_PATH.QUESTION_PAGE,
                 params: {
-                  item
+                  item,
+                  list: this.questionList // 跳转时把获取到的当前分类列表传递
                 } as QuestionPageResponse
               })
             })

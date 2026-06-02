@@ -25,7 +25,8 @@ export interface QuestionDetail extends QuestionItem {
 }
 
 export interface QuestionPageResponse {
-  item: QuestionDetail // 跳转到题目详情页用的题目数据集合
+  item: QuestionItem // 跳转到题目详情页用的题目数据集合
+  list: QuestionItem[] // 在详情页需要拿到整个试题集合
 }
 
 export interface PageData<T> {
