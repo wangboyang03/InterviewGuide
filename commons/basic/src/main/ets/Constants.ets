@@ -20,4 +20,5 @@ export class Constants {
 
 export class PAGE_PATH {
   static readonly LOGIN_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/LoginPage`
+  static readonly QUESTION_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/QuestionPage`
 }

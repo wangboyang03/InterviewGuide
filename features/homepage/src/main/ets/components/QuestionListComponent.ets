@@ -1,4 +1,4 @@
-import { Constants, Logger, NetworkUtil } from "basic"
+import { Auth, Constants, Logger, NetworkUtil, PAGE_PATH } from "basic"
 import { PageData, QuestionItem, QuestionListRequest, SortType } from "../models"
 import { QuestionItemComponent } from "./QuestionItemComponent"
 
@@ -84,7 +84,11 @@ export struct QuestionListComponent {
       List() {
         ForEach(this.questionList, (item: QuestionItem, _:number) => {
           ListItem() {
-            QuestionItemComponent({item: item})
+            QuestionItemComponent({item: item}).onClick(() => {
+              Auth.getInstance().checkAuth({
+                url: PAGE_PATH.QUESTION_PAGE
+              })
+            })
           }
         })
         this.getBottomDisplay() // 放在底部的提示

@@ -101,17 +101,17 @@ export struct MineView {
       .backgroundColor($r('app.color.white'))
       .borderRadius(8)
 
-      Row({ space: 10 }) {
+      Column({ space: 10 }) {
         Button('修改token模拟失效')
           .onClick(() => {
             this.user.token = 'x'
             Auth.getInstance().setUser(this.user)
           })
-        // Button('清空token')
-        //   .onClick(() => {
-        //     this.user.token = ''
-        //     Auth.getInstance().setUser({} as UserResponse)
-        //   })
+        Button('清空token')
+          .onClick(() => {
+            this.user.token = ''
+            Auth.getInstance().setUser({} as UserResponse)
+          })
         Button('模拟refreshToken失效').onClick(() => {
           this.user.refreshToken = 'x'
           Auth.getInstance().setUser(this.user)

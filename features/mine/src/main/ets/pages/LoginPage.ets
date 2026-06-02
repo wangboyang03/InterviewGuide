@@ -35,7 +35,17 @@ struct LoginPage {
       // AppStorage.setOrCreate<UserResponse>(Constants.USER_STORAGE_KEY, user) // 存储用户信息
       Auth.getInstance().setUser(user) // 持久化用户信息
       emitter.emit(Constants.LOGIN_EVENT) // 登录成功发送首页数据刷新事件
-      this.getUIContext().getRouter().back()
+      // 判断是否需要跳转拦截
+      const router = this.getUIContext().getRouter()
+      const params = router.getParams() as Record<string, string> ?? {}
+      if (params?.return_url) {
+        router.replaceUrl({
+          url: params.return_url,
+          params
+        })
+      } else {
+        router.back()
+      }
     } catch (error) {
       Logger.log(error)
     } finally {

@@ -1,5 +1,6 @@
-import { Constants } from "../Constants";
+import { Constants, PAGE_PATH } from "../Constants";
 import { UserResponse } from "../models";
+import { router } from "@kit.ArkUI";
 
 export class Auth {
   private static sInstance: Auth;
@@ -22,5 +23,23 @@ export class Auth {
 
   getUser() {
     return AppStorage.get<UserResponse>(Constants.USER_STORAGE_KEY)
+  }
+
+  /**
+   * 跳转鉴权
+   */
+  checkAuth(options: router.RouterOptions) {
+    const user = this.getUser()
+    if (user?.token) {
+      router.pushUrl(options) // 直接放行跳转
+    } else {
+      // 解析路由参数
+      const params = options.params as Record<string, string> ?? {}
+      params.return_url = options.url
+      router.pushUrl({
+        url: PAGE_PATH.LOGIN_PAGE,
+        params
+      })
+    }
   }
 }
