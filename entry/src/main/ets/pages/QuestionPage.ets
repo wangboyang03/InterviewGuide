@@ -1,9 +1,10 @@
 import { HMNavigationBar, HMTag } from '../commons/components'
 import { GlobalVariable } from '../commons/constants'
-import { QuestionDetail, QuestionPageParams } from '../models'
+import { QuestionDetail, QuestionOptionParams, QuestionPageParams } from '../models'
 import { hmHttp } from '../commons/utils/HMHttp'
 import { webview } from '@kit.ArkWeb'
 import { HMCustomDialog } from '../commons/components/HMCustomDialog'
+import { JSON } from '@kit.ArkTS'
 
 @Entry
 @Component
@@ -44,6 +45,40 @@ struct QuestionPage {
     })
     this.dialog.close()
     return result
+  }
+
+  /**
+   * 收藏、取消收藏 点赞、取消点赞
+   */
+  async getQuestionOption(optType: 1 | 2, click: 0 | 1) {
+    // 获取操作类型
+    const params: QuestionOptionParams = {
+      id: this.item.id,
+      type: 0,
+      optType
+    }
+
+    try {
+      // 请求接口
+      hmHttp.request<null, QuestionOptionParams>({
+        url: click == 1 ? 'question/opt' : 'question/unOpt',
+        method: 'POST',
+        params
+      })
+      // this.getUIContext().getPromptAction().showToast({
+      //   message: JSON.stringify(result)
+      // })
+      // 操作本地数据
+      if (optType == 1) {
+        this.item.likeFlag = click
+        this.getUIContext().getPromptAction().showToast({message: click ? '点赞成功' : '取消点赞'})
+      } else if (optType == 2) {
+        this.item.collectFlag = click
+        this.getUIContext().getPromptAction().showToast({message: click ? '收藏成功' : '取消收藏'})
+      }
+    } catch (error) {
+      this.getUIContext().getPromptAction().showToast({message: error.message})
+    }
   }
 
   build() {
@@ -128,8 +163,10 @@ struct QuestionPage {
   @Builder
   MenuBuilder() {
     Menu() {
-      MenuItem({ content: '点赞' })
-      MenuItem({ content: '收藏' })
+      MenuItem({ content: this.item.likeFlag == 1 ? '取消点赞' : '点赞' })
+        .onClick(()=>this.getQuestionOption(1, this.item.likeFlag == 1 ? 0 : 1))
+      MenuItem({ content: this.item.collectFlag == 1 ? '取消收藏' : '收藏' })
+        .onClick(()=>this.getQuestionOption(2, this.item.collectFlag == 1 ? 0 : 1))
       MenuItem({ content: '点我反馈' })
       MenuItem({ content: '试题分享' })
     }

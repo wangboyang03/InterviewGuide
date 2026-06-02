@@ -90,3 +90,9 @@ export interface LoginParams {
 export interface QuestionPageParams {
   item: QuestionItem
 }
+
+export interface QuestionOptionParams {
+  id: string
+  type: 0 | 1 // 0面试题1面经
+  optType: 1 | 2 // 1点赞2收藏
+}
