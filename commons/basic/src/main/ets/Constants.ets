@@ -20,6 +20,8 @@ export class Constants {
   static readonly LOGIN = 'login' // 登录接口
   static readonly REFRESH_TOKEN = 'refreshToken' // 刷新token接口
   static readonly QUESTION_DETAIL = 'question/' // 试题详情接口
+  static readonly OPTION_MENU = 'question/opt' // 操作试题点赞或收藏
+  static readonly UN_OPTION_MENU = 'question/unOpt' // 操作试题取消点赞或收藏
 }
 
 export class PAGE_PATH {

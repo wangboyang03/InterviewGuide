@@ -51,3 +51,9 @@ export interface QuestionListRequest {
   page?: number
   pageSize?: number
 }
+
+export interface QuestionOptionResponse {
+  id: string // 题目id 标记当前题目
+  type: 0 | 1 // 类型0试题 1面经
+  optType: 1 | 2 // 1点赞 2收藏
+}
