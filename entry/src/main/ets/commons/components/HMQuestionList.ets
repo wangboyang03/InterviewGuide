@@ -1,5 +1,5 @@
 import { HMQuestionItem } from "."
-import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
+import { PageData, QuestionItem, QuestionListParams, QuestionPageParams, SortType } from "../../models"
 import { hmHttp } from "../utils"
 
 @Component
@@ -71,6 +71,14 @@ export struct HMQuestionList {
             HMQuestionItem({
               item
             })
+              .onClick(() => {
+                this.getUIContext().getRouter().pushUrl({
+                  url: 'pages/QuestionPage',
+                  params: {
+                    item
+                  } as QuestionPageParams
+                })
+              })
           }
         })
         // 底部提示
