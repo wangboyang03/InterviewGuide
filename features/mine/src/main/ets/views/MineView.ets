@@ -107,11 +107,15 @@ export struct MineView {
             this.user.token = 'x'
             Auth.getInstance().setUser(this.user)
           })
-        Button('清空token')
-          .onClick(() => {
-            this.user.token = ''
-            Auth.getInstance().setUser({} as UserResponse)
-          })
+        // Button('清空token')
+        //   .onClick(() => {
+        //     this.user.token = ''
+        //     Auth.getInstance().setUser({} as UserResponse)
+        //   })
+        Button('模拟refreshToken失效').onClick(() => {
+          this.user.refreshToken = 'x'
+          Auth.getInstance().setUser(this.user)
+        })
       }
     }
     .padding(16)

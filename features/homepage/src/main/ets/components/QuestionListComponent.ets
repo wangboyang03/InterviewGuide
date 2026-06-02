@@ -1,4 +1,4 @@
-import { Constants, NetworkUtil } from "basic"
+import { Constants, Logger, NetworkUtil } from "basic"
 import { PageData, QuestionItem, QuestionListRequest, SortType } from "../models"
 import { QuestionItemComponent } from "./QuestionItemComponent"
 
@@ -7,7 +7,7 @@ export struct QuestionListComponent {
   @State refreshing: boolean = false // 正在刷新中
   @State refreshState: RefreshStatus = RefreshStatus.Inactive // 刷新状态
   @State loading: boolean = false // 正在加载数据
-  @State isFinished: boolean = true // 全部加载完毕
+  @State isFinished: boolean = false // 全部加载完毕
   @Prop typeId: number // 试题ID
   @Prop @Watch('onChangeSort') sort: SortType = SortType.Default // 排序方式 默认
   @State page: number = 1
@@ -55,25 +55,28 @@ export struct QuestionListComponent {
   }
 
   async onRefresh() {
-    this.page = 1 // 从头开始请求
-    const result = await this.getQuestionList()
-    this.questionList = result?.rows
-    this.refreshing = false
-    if (this.page >= result.pageTotal) {
-      this.isFinished = true
-    } else {
-      this.isFinished = false
-      this.page++
+    try {
+      this.page = 1 // 从头开始请求
+      const result = await this.getQuestionList()
+      this.questionList = result?.rows
+      this.refreshing = false
+      if (this.page >= result.pageTotal) {
+        this.isFinished = true
+      } else {
+        this.isFinished = false
+        this.page++
+      }
+      this.getUIContext().getPromptAction().showToast({ message: '刷新完成' })
+    } catch (error) {
+      Logger.error(JSON.stringify(error))
+    } finally {
+      this.loading = false
+      this.refreshing = false
     }
-    this.getUIContext().getPromptAction().showToast({ message: '刷新完成' })
   }
 
   onChangeSort() {
     this.refreshing = true
-  }
-
-  aboutToAppear(): void {
-    this.onLoad()
   }
 
   build() {
@@ -94,13 +97,6 @@ export struct QuestionListComponent {
       })
       .edgeEffect(EdgeEffect.None)
       .scrollBar(BarState.Off)
-      .onReachEnd(async () => {
-        if (!this.loading && !this.isFinished) {
-          this.loading = true
-          await this.onLoad()
-          this.loading = false // 便于下次请求
-        }
-      })
       .nestedScroll({
         scrollForward: NestedScrollMode.PARENT_FIRST, // 向上滚动 父组件优先
         scrollBackward: NestedScrollMode.SELF_FIRST // 向下滚动 子组件优先
@@ -145,7 +141,7 @@ export struct QuestionListComponent {
           Text("没有数据了")
             .fontSize(12)
             .fontColor($r("app.color.common_gray_01"))
-        } else {
+        } else if (this.loading) {
           Text("正在加载中")
             .fontSize(12)
             .fontColor($r("app.color.common_gray_01"))

@@ -52,7 +52,10 @@ instance.interceptors.response.use((res: AxiosResponse) => {
           user.refreshToken = result.data?.data['refreshToken']
           Auth.getInstance().setUser(user) // 存储新的用户数据
           // promptAction.showDialog({ message: `已成功刷新token,现在token是${user.token}`})
-          return instance(error.config) // 将错误请求重发出去
+          if (error.config) {
+            error.config.headers.Authorization = `Bearer ${user.token}`
+            return instance(error.config) // 将错误请求重发出去
+          }
         }
       } catch (error) {
         // 刷新不了token
