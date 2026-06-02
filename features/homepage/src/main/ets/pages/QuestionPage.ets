@@ -69,14 +69,23 @@ struct QuestionPage {
    * 切换试题
    * @param step 步数
    */
-  toggleQuestionItem(step: number) {
+  async toggleQuestionItem(step: number) {
     const currentIndex = this.currentQuestionIndex + step // 临时局部变量
     if (currentIndex < 0 || currentIndex >= this.currentList.length) {
       this.getUIContext().getPromptAction().showToast({message:'暂无更多题目'})
       return;
     }
     this.currentQuestionIndex = currentIndex // 真正决定当前试题的索引
-    this.currentItem = this.currentList[this.currentQuestionIndex] // 查找切换后试题在集合中的位置并赋值
+    const currentDetailData = this.currentList[currentIndex]
+    if (currentDetailData.answer) {
+      // this.currentItem = this.currentList[this.currentQuestionIndex] // 查找切换后试题在集合中的位置并赋值
+      this.currentItem = currentDetailData // 查找切换后试题在集合中的位置并赋值
+    } else {
+      const fullDetailData = await this.getCurrentQuestionData(currentDetailData.id)
+      this.currentList[currentIndex] = fullDetailData // 更新当前索引在集合中的题目信息
+      this.currentItem = fullDetailData // 更新当前题目
+    }
+    this.controller.runJavaScript(`writeHtml(\`${this.currentItem.answer}\`)`) // 重新渲染答案
   }
 
   async aboutToAppear(): Promise<void> {
@@ -84,9 +93,11 @@ struct QuestionPage {
     if (!!params) {
       // this.getUIContext().getPromptAction().showToast({message:JSON.stringify(params)})
       this.currentItem = params.item as QuestionDetail
-      this.currentItem = await this.getCurrentQuestionData(this.currentItem.id)
       this.currentList = params.list as QuestionDetail[] // 接收跳转后list参数
       this.currentQuestionIndex = this.currentList.findIndex((item) => item.id == this.currentItem.id) // 记录当前试题在集合中的位置
+      this.currentItem = await this.getCurrentQuestionData(this.currentItem.id)
+      // this.currentList[this.currentQuestionIndex] = await this.getCurrentQuestionData(this.currentItem.id)
+      this.currentList[this.currentQuestionIndex] = this.currentItem // 默认加载的试题也要放进数组缓存
       this.controller.loadUrl($rawfile('question.html')) // 每次页面创建都加载一下网页渲染当前答案
     }
   }
