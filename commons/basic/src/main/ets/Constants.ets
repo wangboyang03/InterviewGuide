@@ -11,6 +11,7 @@ export class Constants {
   // 网络相关
   static readonly BASE_URL = 'https://api-harmony-teach.itheima.net/hm/' // 基地址
   static readonly NETWORK_TIME_OUT = 10000 // 请求超时时间
+  static readonly SUCCESS_CODE = 10000 // 请求成功码
   static readonly QUESTION_TYPE = 'question/type' // 试题类型接口
   static readonly QUESTION_LIST = 'question/list' // 试题列表接口
   static readonly LOGIN = 'login' // 登录接口

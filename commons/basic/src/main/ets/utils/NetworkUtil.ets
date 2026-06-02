@@ -4,7 +4,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios'
 import { Auth, Logger, PAGE_PATH, ResponseData, UserResponse } from '../../../../Index'
 import { Constants } from '../Constants'
-import { router } from '@kit.ArkUI'
+import { promptAction, router } from '@kit.ArkUI'
 
 // 1.创建axios实例对象
 const instance = axios.create({
@@ -47,10 +47,11 @@ instance.interceptors.response.use((res: AxiosResponse) => {
               Authorization: `Bearer ${user?.refreshToken}`
             }
           })
-        if (result.data?.code == 200) {
+        if (result.data?.code == Constants.SUCCESS_CODE) {
           user.token = result.data?.data['token']
           user.refreshToken = result.data?.data['refreshToken']
           Auth.getInstance().setUser(user) // 存储新的用户数据
+          // promptAction.showDialog({ message: `已成功刷新token,现在token是${user.token}`})
           return instance(error.config) // 将错误请求重发出去
         }
       } catch (error) {

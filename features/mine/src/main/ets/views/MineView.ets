@@ -1,4 +1,4 @@
-import { BasicTool, ClockSignIn, Constants, PAGE_PATH, StatusManager, UserResponse } from "basic"
+import { Auth, BasicTool, ClockSignIn, Constants, PAGE_PATH, StatusManager, UserResponse } from "basic"
 import { NavigationResponse, Tool } from "../models"
 
 @Component
@@ -100,6 +100,19 @@ export struct MineView {
       }
       .backgroundColor($r('app.color.white'))
       .borderRadius(8)
+
+      Row({ space: 10 }) {
+        Button('修改token模拟失效')
+          .onClick(() => {
+            this.user.token = 'x'
+            Auth.getInstance().setUser(this.user)
+          })
+        Button('清空token')
+          .onClick(() => {
+            this.user.token = ''
+            Auth.getInstance().setUser({} as UserResponse)
+          })
+      }
     }
     .padding(16)
     .backgroundColor($r('app.color.common_gray_bg'))
