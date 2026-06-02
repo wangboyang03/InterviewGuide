@@ -43,9 +43,10 @@ struct QuestionPage {
       Row({ space: 12 }) {
         // CategoryTag({ tag: 'HarmonyOS' })
         // CategoryTag({ tag: 'ArkTS', tagColor: '#ff6600' })
-        ForEach(this.currentItem.stage, (tag: string)=> {
+        ForEach(this.currentItem.stage, (tag: string) => {
           CategoryTag({ tag: tag, tagColor: '#ff6600' })
         })
+        CategoryTag({ difficulty: this.currentItem.difficulty })
         Blank()
         Image($r("app.media.ic_home_more"))
           .width(20)

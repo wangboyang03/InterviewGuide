@@ -2,7 +2,7 @@ import { AllTagInformation } from "../models"
 
 @Component
 export struct CategoryTag {
-  @Prop difficulty: number = 1 // 困难等级 1-2 3-4 -5
+  @Prop difficulty: number = 0 // 困难等级 1-2 3-4 -5
   @Prop tag: string
   @Prop tagColor: ResourceColor
 
