@@ -1,11 +1,13 @@
 import { CategoryTag, Constants, NavigationBar, NetworkUtil } from 'basic'
 import { QuestionDetail, QuestionPageResponse } from '../models/question'
+import { webview } from '@kit.ArkWeb'
 
 @Entry
 @Component
 struct QuestionPage {
   @StorageProp(Constants.SAFE_BOTTOM_HEIGHT_KEY) bottomHeight: number = 0
   @State currentItem: QuestionDetail = {} as QuestionDetail
+  controller: WebviewController = new webview.WebviewController()
 
   /**
    * 获取当前试题详情数据
@@ -24,6 +26,7 @@ struct QuestionPage {
       // this.getUIContext().getPromptAction().showToast({message:JSON.stringify(params)})
       this.currentItem = params.item as QuestionDetail
       this.currentItem = await this.getCurrentQuestionData(params.item.id)
+      this.controller.loadUrl($rawfile('question.html')) // 每次页面创建都加载一下网页渲染当前答案
     }
   }
 
@@ -61,9 +64,20 @@ struct QuestionPage {
         .color($r('app.color.common_gray_bg'))
       // 内容
       this.TitleBuilder('答案：')
-      Text(this.currentItem.answer ?? '暂无答案')
+      /*Text(this.currentItem.answer ?? '暂无答案')
         .layoutWeight(1)
-        .padding(16)
+        .padding(16)*/
+      Web({
+        src: $rawfile('question.html'),
+        controller: this.controller
+      })
+        .width('100%')
+        .layoutWeight(1)
+        .onPageEnd(() => {
+          if (this.currentItem.answer) {
+            this.controller.runJavaScript(`writeHtml(\`${this.currentItem.answer}\`)`)
+          }
+        })
 
       Row({ space: 80 }) {
         Row() {
