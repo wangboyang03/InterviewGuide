@@ -1,15 +1,29 @@
-import { CategoryTag, Constants, NavigationBar } from 'basic'
-import { QuestionPageResponse } from '../models/question'
+import { CategoryTag, Constants, NavigationBar, NetworkUtil } from 'basic'
+import { QuestionDetail, QuestionPageResponse } from '../models/question'
 
 @Entry
 @Component
 struct QuestionPage {
   @StorageProp(Constants.SAFE_BOTTOM_HEIGHT_KEY) bottomHeight: number = 0
+  @State currentItem: QuestionDetail = {} as QuestionDetail
 
-  aboutToAppear(): void {
+  /**
+   * 获取当前试题详情数据
+   * @param id 试题id
+   */
+  async getCurrentQuestionData(id: string) {
+    const result = await NetworkUtil.getInstance().request<QuestionDetail>({
+      url: `${Constants.QUESTION_DETAIL}${id}`
+    })
+    return result;
+  }
+
+  async aboutToAppear(): Promise<void> {
     const params = this.getUIContext().getRouter().getParams() as QuestionPageResponse
     if (!!params) {
-      this.getUIContext().getPromptAction().showToast({message:JSON.stringify(params)})
+      // this.getUIContext().getPromptAction().showToast({message:JSON.stringify(params)})
+      this.currentItem = params.item as QuestionDetail
+      this.currentItem = await this.getCurrentQuestionData(params.item.id)
     }
   }
 
@@ -21,14 +35,17 @@ struct QuestionPage {
         rightIcon: $r('app.media.ic_shareIcon')
       })
       this.TitleBuilder('题目: ')
-      Text('ArkUI的容器组件有哪些？')
+      Text(this.currentItem.stem ?? '')
         .width('100%')
         .padding(16)
         .maxLines(2)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
       Row({ space: 12 }) {
-        CategoryTag({ tag: 'HarmonyOS' })
-        CategoryTag({ tag: 'ArkTS', tagColor: '#ff6600' })
+        // CategoryTag({ tag: 'HarmonyOS' })
+        // CategoryTag({ tag: 'ArkTS', tagColor: '#ff6600' })
+        ForEach(this.currentItem.stage, (tag: string)=> {
+          CategoryTag({ tag: tag, tagColor: '#ff6600' })
+        })
         Blank()
         Image($r("app.media.ic_home_more"))
           .width(20)
@@ -43,7 +60,7 @@ struct QuestionPage {
         .color($r('app.color.common_gray_bg'))
       // 内容
       this.TitleBuilder('答案：')
-      Text('我是答案')
+      Text(this.currentItem.answer ?? '暂无答案')
         .layoutWeight(1)
         .padding(16)
 
