@@ -1,5 +1,5 @@
-import { Auth, Constants, Logger, NetworkUtil, PAGE_PATH } from "basic"
-import { PageData, QuestionItem, QuestionListRequest, QuestionPageResponse, SortType } from "../models"
+import { Auth, Constants, Logger, NetworkUtil, PAGE_PATH, QuestionItem, QuestionPageResponse } from "basic"
+import { PageData, QuestionListRequest, SortType } from "../models"
 import { QuestionItemComponent } from "./QuestionItemComponent"
 
 @Component

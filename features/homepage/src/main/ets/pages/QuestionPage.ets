@@ -1,5 +1,5 @@
-import { CategoryTag, Constants, NavigationBar, NetworkUtil, Logger } from 'basic'
-import { QuestionDetail, QuestionOptionResponse, QuestionPageResponse } from '../models/question'
+import { CategoryTag, Constants, NavigationBar, NetworkUtil, Logger, QuestionDetail, QuestionPageResponse } from 'basic'
+import { QuestionOptionResponse } from '../models/question'
 import { webview } from '@kit.ArkWeb'
 import { CustomLoadingDialog } from '../components/CustomLoadingDialog'
 import { QuestionShareDialog } from '../components/QuestionShareDialog'

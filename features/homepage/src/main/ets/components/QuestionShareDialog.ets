@@ -1,5 +1,4 @@
-import { Constants, UserResponse, Logger } from "basic"
-import { QuestionDetail, } from "../models"
+import { Constants, UserResponse, Logger, QuestionDetail } from "basic"
 import { image } from "@kit.ImageKit"
 import fileIo from "@ohos.file.fs"
 import { fileUri } from "@kit.CoreFileKit"

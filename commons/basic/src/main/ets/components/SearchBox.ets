@@ -1,5 +1,7 @@
-import { Auth, Logger } from "../utils"
+import { Auth, Logger, NetworkUtil } from "../utils"
 import { scanBarcode } from "@kit.ScanKit"
+import { Constants, PAGE_PATH } from "../Constants"
+import { QuestionDetail, QuestionPageResponse } from "../models"
 
 @Component
 export struct SearchBox {
@@ -16,7 +18,19 @@ export struct SearchBox {
       if (!!context) {
         if (canIUse("SystemCapability.Multimedia.Scan.ScanBarcode")) {
           const result = await scanBarcode.startScanForResult(context)
-          this.getUIContext().getPromptAction().showToast({message: result.originalValue})
+          if (!!result.originalValue) {
+            // 先发请求拿到题目详情信息
+            const currentItem = await NetworkUtil.getInstance().request<QuestionDetail>({
+              url: `${Constants.QUESTION_DETAIL}${result.originalValue}`
+            })
+            Auth.getInstance().checkAuth({
+              url: `${PAGE_PATH.QUESTION_PAGE}`,
+              params: {
+                item: currentItem,
+                list: [currentItem]
+              } as QuestionPageResponse
+            })
+          }
         } else {
           this.getUIContext().getPromptAction().showToast({message: "当前设备不支持扫码"})
         }
@@ -32,7 +46,7 @@ export struct SearchBox {
       Image($r("app.media.ic_home_scan")) // 扫一扫
         .width(24)
         .aspectRatio(1)
-        .onClick(() => this.scanQuestionCode())
+        .onClick(() => Auth.getInstance().checkAuth((): Promise<void> => this.scanQuestionCode()))
       Row() {
         Image($r("app.media.ic_common_search"))
           .width(14)

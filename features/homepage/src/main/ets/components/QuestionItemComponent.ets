@@ -1,5 +1,4 @@
-import { QuestionTag } from "basic"
-import { QuestionItem } from "../models"
+import { QuestionItem, QuestionTag } from "basic"
 
 @Component
 export struct QuestionItemComponent {
