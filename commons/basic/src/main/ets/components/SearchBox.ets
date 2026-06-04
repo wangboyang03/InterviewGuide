@@ -61,6 +61,11 @@ export struct SearchBox {
       .justifyContent(FlexAlign.Center)
       .backgroundColor($r("app.color.common_gray_bg"))
       .borderRadius(16)
+      .onClick(() => {
+        Auth.getInstance().checkAuth({
+          url: `${PAGE_PATH.SEARCH_PAGE}`
+        })
+      })
 
       this.rightBuilder()
     }
