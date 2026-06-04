@@ -1,3 +1,5 @@
+import { HistoryStorage } from "basic"
+
 interface ButtonItem {
   text: string
   onClick?: () => void
@@ -7,10 +9,10 @@ interface ButtonItem {
 export struct SearchHistory {
   @State isDeleting: boolean = false
   @State keywords: string[] = []
-  // onSearch: (val: string) => void = () => {}
+  onSearch: (val: string) => void = () => {}
 
   aboutToAppear(): void {
-    this.keywords = ['HarmonyOS', 'ArkUI', '大厂', 'Component', 'ArkTS']
+    this.keywords = HistoryStorage.getInstance().getAllStorageSync()
   }
 
   build() {
@@ -25,7 +27,8 @@ export struct SearchHistory {
           Text() {
             Span('全部删除')
               .onClick(() => {
-                // TODO 删除全部
+                HistoryStorage.getInstance().clearStorageSync()
+                this.keywords = []
               })
             Span(' | ')
             Span('完成')
@@ -58,7 +61,8 @@ export struct SearchHistory {
               .aspectRatio(1)
               .fillColor('#878787')
               .onClick(() => {
-                // TODO 删除单个
+                HistoryStorage.getInstance().deleteStorageSyncFromKey(keyword)
+                this.keywords = HistoryStorage.getInstance().getAllStorageSync()
               })
           }
         }
@@ -68,10 +72,10 @@ export struct SearchHistory {
         .borderRadius(16)
         .margin({ right: 16, top: 16 })
         .onClick(() => {
-          // if (!this.isDeleting) {
-          //   // 非编辑态才可点击搜索
-          //   this.onSearch(keyword)
-          // }
+          if (!this.isDeleting) {
+            // 非编辑态才可点击搜索
+            this.onSearch(keyword)
+          }
         })
       })
     }

@@ -4,6 +4,7 @@ export class Constants {
   static readonly LIGHT_COLOR: string = "#ffffff" // 白色
   static readonly DARK_COLOR: string = "#000000" // 暗色
   static readonly USER_STORAGE_KEY: string = "user_cip" // 用户信息存储key
+  static readonly GLOBAL_CONTEXT: string = "context"
   static readonly LOGIN_EVENT: string = "loginEvent" // 登录成功发生请求的事件名
 
   // 模块相关

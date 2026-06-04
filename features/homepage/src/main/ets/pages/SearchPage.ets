@@ -1,5 +1,5 @@
 import { router } from '@kit.ArkUI'
-import { Constants } from 'basic'
+import { Constants, HistoryStorage } from 'basic'
 import { SearchHistory, QuestionListComponent } from '../components'
 
 @Entry
@@ -21,6 +21,7 @@ struct SearchPage {
             this.keyword = value
             if (!!this.keyword.trim()) {
               this.isSearch = true
+              HistoryStorage.getInstance().setStorageSync(value)
             }
           })
           .onChange((value)=> {
@@ -46,9 +47,10 @@ struct SearchPage {
           })
         } else {
           SearchHistory({
-            // onSearch: keyword => {
-            //   // TODO 进行搜索
-            // }
+            onSearch: keyword => {
+              this.keyword = keyword
+              this.isSearch = true
+            }
           })
         }
       }
