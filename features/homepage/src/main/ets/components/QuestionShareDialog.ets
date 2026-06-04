@@ -80,15 +80,28 @@ export struct QuestionShareDialog {
 
 
       Row() {
-        Text('保存到本地')
+        // Text('保存到本地')
+        SaveButton({
+          icon: SaveIconStyle.FULL_FILLED,
+          text: SaveDescription.SAVE_IMAGE,
+          buttonType: ButtonType.Normal
+        })
           .fontColor($r('app.color.white'))
           .fontSize(14)
           .padding(12)
           .backgroundColor($r('app.color.common_main_color'))
+          .onClick((_, result) => {
+            if (result == SaveButtonOnClickResult.SUCCESS) {
+              this.saveImageFromShareComponent()
+            } else {
+              this.getUIContext().getPromptAction().showToast({message: '保存图片失败'})
+              this.controller.close()
+            }
+          })
       }
       .borderRadius({ topLeft: 8 })
       .clip(true)
-      .onClick(() => this.saveImageFromShareComponent())
+      // .onClick(() => this.saveImageFromShareComponent())
     }
     .borderRadius(8)
     .clip(true)
