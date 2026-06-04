@@ -47,9 +47,7 @@ export struct QuestionListComponent {
 
   async onLoad() {
     const result = await this.getQuestionList()
-    result.rows.forEach(item => {
-      item.highLightList = this.getHighLightLabel(item.stem, this.keyword)
-    })
+    this.buildHighlightData(result.rows)
     this.questionList.push(...result.rows)
     this.loading = false
     if (this.page >= result.pageTotal) {
@@ -63,6 +61,7 @@ export struct QuestionListComponent {
     try {
       this.page = 1 // 从头开始请求
       const result = await this.getQuestionList()
+      this.buildHighlightData(result.rows)
       this.questionList = result?.rows
       this.refreshing = false
       if (this.page >= result.pageTotal) {
@@ -84,7 +83,13 @@ export struct QuestionListComponent {
     this.refreshing = true
   }
 
-  getHighLightLabel(stem: string, keyword: string): HighlightLabelStyle[] {
+  /**
+   * 通过传入的题目和关键词进行重新拆分组装
+   * @param stem
+   * @param keyword
+   * @returns list 包含拆分后的题目和是否需要高亮的对象集合
+   */
+  private getHighLightLabel(stem: string, keyword: string): HighlightLabelStyle[] {
     const result: HighlightLabelStyle[] = [] // [{text:'如何合并两个',needHighLight:false},{text:'对象',needHighLight:true}]
     const position = stem.indexOf(keyword) // 关键字在stem中的位置
     // 先把关键字前面的文本放入集合里 这部分不需要高亮
@@ -103,6 +108,12 @@ export struct QuestionListComponent {
       needHighLight: false
     })
     return result
+  }
+
+  private buildHighlightData(list: QuestionItem[]) {
+    list.forEach(item => {
+      item.highLightList = this.getHighLightLabel(item.stem, this.keyword)
+    })
   }
 
   build() {
