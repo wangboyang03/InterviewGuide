@@ -23,6 +23,7 @@ export class Constants {
   static readonly QUESTION_DETAIL = 'question/' // 试题详情接口
   static readonly OPTION_MENU = 'question/opt' // 操作试题点赞或收藏
   static readonly UN_OPTION_MENU = 'question/unOpt' // 操作试题取消点赞或收藏
+  static readonly TRACKING_TIME = 'time/tracking' // 学习信息-统计时长埋点
 }
 
 export class PAGE_PATH {

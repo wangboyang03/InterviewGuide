@@ -6,21 +6,6 @@ export struct QuestionItemComponent {
   @Prop textColorWithKeyWord: ResourceColor = '#ffff0000'
   @Prop searchKeyWord: string = ""
 
-  /**
-   * 通过传入关键词 筛选包含关键词的文本并将需要高亮显示的返回
-   */
-  getHighLightText(keyword: string): string {
-    if (!!keyword.trim()) {
-      const stem = this.item.stem // 获取当前题目
-      const result = []
-      if (!!stem.includes(keyword)) {
-        // 暂存。
-      }
-    }
-		return ''
-	}
-
-
   build() {
     Column({ space: 10 }) {
       Row({ space: 5 }) {

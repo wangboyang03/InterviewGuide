@@ -16,3 +16,9 @@ export interface ResponseData<T = object> {
   message: string;
   data: T;
 }
+
+export interface TrackingRequest {
+  endTime: number;
+  questionId: string;
+  startTime: number;
+}

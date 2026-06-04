@@ -1,4 +1,5 @@
-import { CategoryTag, Constants, NavigationBar, NetworkUtil, Logger, QuestionDetail, QuestionPageResponse } from 'basic'
+import { CategoryTag, Constants, NavigationBar, NetworkUtil, Logger, QuestionDetail, QuestionPageResponse,
+  TrackingPointUtil } from 'basic'
 import { QuestionOptionResponse } from '../models/question'
 import { webview } from '@kit.ArkWeb'
 import { CustomLoadingDialog } from '../components/CustomLoadingDialog'
@@ -11,6 +12,8 @@ struct QuestionPage {
   @State currentItem: QuestionDetail = {} as QuestionDetail
   @State currentList: QuestionDetail[] = [] // 接收传递过来的试题集合
   @State currentQuestionIndex: number = 0
+  @State learnStartTime: number = Date.now() // 记录学习开始时间
+
   controller: WebviewController = new webview.WebviewController()
   // 加载提示弹窗
   loadingDialog = new CustomDialogController({
@@ -110,8 +113,14 @@ struct QuestionPage {
     }
   }
 
+  onPageShow(): void {
+    this.learnStartTime = Date.now()
+  }
+
   onPageHide(): void {
     this.loadingDialog.close()
+    TrackingPointUtil.getInstance().record(this.learnStartTime, Date.now(), this.currentItem.id) // 记录题目埋点信息
+    TrackingPointUtil.getInstance().report() // 上报埋点
   }
 
   build() {
