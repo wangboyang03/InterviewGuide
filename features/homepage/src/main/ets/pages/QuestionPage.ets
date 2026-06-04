@@ -2,6 +2,7 @@ import { CategoryTag, Constants, NavigationBar, NetworkUtil, Logger } from 'basi
 import { QuestionDetail, QuestionOptionResponse, QuestionPageResponse } from '../models/question'
 import { webview } from '@kit.ArkWeb'
 import { CustomLoadingDialog } from '../components/CustomLoadingDialog'
+import { QuestionShareDialog } from '../components/QuestionShareDialog'
 
 @Entry
 @Component
@@ -11,8 +12,15 @@ struct QuestionPage {
   @State currentList: QuestionDetail[] = [] // 接收传递过来的试题集合
   @State currentQuestionIndex: number = 0
   controller: WebviewController = new webview.WebviewController()
+  // 加载提示弹窗
   loadingDialog = new CustomDialogController({
     builder: CustomLoadingDialog(),
+    customStyle: true, // 打开自定义样式
+    alignment: DialogAlignment.Center // 居中显示
+  })
+  // 分享弹窗
+  sharedDialog = new CustomDialogController({
+    builder: QuestionShareDialog({item: this.currentItem}),
     customStyle: true, // 打开自定义样式
     alignment: DialogAlignment.Center // 居中显示
   })
@@ -213,7 +221,7 @@ struct QuestionPage {
       MenuItem({ content: this.currentItem.likeFlag == 1 ? '取消点赞' : '点赞' }).onClick(() => this.OptionCurrentQuestion(1, this.currentItem.likeFlag == 1 ? 0 : 1))
       MenuItem({ content: this.currentItem.collectFlag == 1 ? '取消收藏' : '收藏' }).onClick(() => this.OptionCurrentQuestion(2, this.currentItem.collectFlag == 1 ? 0 : 1))
       MenuItem({ content: '点我反馈' })
-      MenuItem({ content: '试题分享' })
+      MenuItem({ content: '试题分享' }).onClick(() => this.sharedDialog.open())
     }
     .width(108)
   }

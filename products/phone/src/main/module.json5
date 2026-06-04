@@ -9,9 +9,16 @@
       "tablet",
       "2in1"
     ],
-    "requestPermissions": [{
-      "name": "ohos.permission.INTERNET"
-    }],
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      },
+      {
+        "name": "ohos.permission.WRITE_IMAGEVIDEO",
+        "usedScene": {},
+        "reason": "$string:write_photo"
+      }
+    ],
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:main_pages",

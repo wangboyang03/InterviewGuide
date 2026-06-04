@@ -11,6 +11,10 @@
     {
       "name": "PhoneAbility_label",
       "value": "面试通AI版"
+    },
+    {
+      "name": "write_photo",
+      "value": "申请权限"
     }
   ]
 }
