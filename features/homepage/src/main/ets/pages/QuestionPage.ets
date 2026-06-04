@@ -86,6 +86,10 @@ struct QuestionPage {
       this.getUIContext().getPromptAction().showToast({message:'暂无更多题目'})
       return;
     }
+    // 此时要去切换题目了 应该记录当前题目的信息
+    TrackingPointUtil.getInstance().record(this.learnStartTime, Date.now(), this.currentItem.id)
+    // 更新下一题开始时间为当前时间
+    this.learnStartTime = Date.now()
     this.currentQuestionIndex = currentIndex // 真正决定当前试题的索引
     const currentDetailData = this.currentList[currentIndex]
     if (currentDetailData.answer) {
