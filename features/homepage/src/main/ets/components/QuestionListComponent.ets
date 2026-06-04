@@ -91,7 +91,10 @@ export struct QuestionListComponent {
    */
   private getHighLightLabel(stem: string, keyword: string): HighlightLabelStyle[] {
     const result: HighlightLabelStyle[] = [] // [{text:'如何合并两个',needHighLight:false},{text:'对象',needHighLight:true}]
-    const position = stem.indexOf(keyword) // 关键字在stem中的位置
+    // 后端返回不区分大小写 解决搜索需要匹配大小写问题
+    const fixStem = stem.toLowerCase()
+    const fixKeyword = keyword.toLowerCase()
+    const position = fixStem.indexOf(fixKeyword) // 关键字在stem中的位置
     // 先把关键字前面的文本放入集合里 这部分不需要高亮
     result.push({
       text: stem.substring(0, position),
@@ -99,7 +102,8 @@ export struct QuestionListComponent {
     })
     // 再把需要高亮的文本放入集合里
     result.push({
-      text: keyword,
+      // text: keyword,
+      text: stem.substring(position, position + keyword.length),
       needHighLight: true
     })
     // 最后把关键字后面的文本放入集合里 这部分不需要高亮
