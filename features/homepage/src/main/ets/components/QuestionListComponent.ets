@@ -10,6 +10,7 @@ export struct QuestionListComponent {
   @State isFinished: boolean = false // 全部加载完毕
   @Prop typeId: number // 试题ID
   @Prop @Watch('onChangeSort') sort: SortType = SortType.Default // 排序方式 默认
+  @Prop keyword: string = "" // 用于搜索列表复用组件传值
   @State page: number = 1
   @State questionList: QuestionItem[] = [] // 试题列表
 
@@ -38,7 +39,8 @@ export struct QuestionListComponent {
         questionBankType: 10,
         sort: this.sort,
         page: this.page,
-        pageSize: 10
+        pageSize: 10,
+        keyword: this.keyword
       } as QuestionListRequest
     })
 	}

@@ -1,6 +1,6 @@
 import { router } from '@kit.ArkUI'
 import { Constants } from 'basic'
-import { SearchHistory } from '../components'
+import { SearchHistory, QuestionListComponent } from '../components'
 
 @Entry
 @Component
@@ -17,6 +17,18 @@ struct SearchPage {
           .height(32)
           .layoutWeight(1)
           .defaultFocus(true)
+          .onSubmit((value)=> {
+            this.keyword = value
+            if (!!this.keyword.trim()) {
+              this.isSearch = true
+            }
+          })
+          .onChange((value)=> {
+            this.keyword = value
+            if (!this.keyword.trim() || (!!this.keyword.trim() && !!this.isSearch)) {
+              this.isSearch = false
+            }
+          })
         Text('取消')
           .fontColor($r('app.color.black'))
           .fontSize(15)
@@ -29,7 +41,9 @@ struct SearchPage {
 
       Column() {
         if (this.isSearch) {
-          // TODO 试题列表
+          QuestionListComponent({
+            keyword: this.keyword
+          })
         } else {
           SearchHistory({
             // onSearch: keyword => {
