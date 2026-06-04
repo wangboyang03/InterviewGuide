@@ -1,21 +1,16 @@
-import { QuestionItem, QuestionTag } from "basic"
+import { HighlightLabelStyle, QuestionItem, QuestionTag } from "basic"
 
 @Component
 export struct QuestionItemComponent {
   @Prop item: QuestionItem = {} as QuestionItem
+  @Prop includeKeywordList: HighlightLabelStyle[] = []
   @Prop textColorWithKeyWord: ResourceColor = '#ffff0000'
-  @Prop searchKeyWord: string = ""
 
   build() {
     Column({ space: 10 }) {
       Row({ space: 5 }) {
         QuestionTag({ difficulty: this.item.difficulty }) // 传入试题难度标签
-        Text(this.item?.stem) // 题目
-          .fontSize(15)
-          .layoutWeight(1)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .fontWeight(500)
+        this.buildHeightLightText()
       }
       .width('100%')
 
@@ -36,7 +31,15 @@ export struct QuestionItemComponent {
   }
 
   @Builder buildHeightLightText() {
-    Text(this.item?.stem) // 题目
+    Text() {
+      ForEach(this.includeKeywordList, (item: HighlightLabelStyle) => {
+        Span(item.text)
+          .fontColor(item.needHighLight ? this.textColorWithKeyWord : Color.Black)
+          .textBackgroundStyle({
+            color: item.needHighLight ? Color.Yellow : Color.Transparent,
+          })
+      })
+    }
       .fontSize(15)
       .layoutWeight(1)
       .maxLines(1)

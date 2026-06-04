@@ -1,4 +1,4 @@
-import { Auth, Constants, Logger, NetworkUtil, PAGE_PATH, QuestionItem, QuestionPageResponse } from "basic"
+import { Auth, Constants, HighlightLabelStyle, Logger, NetworkUtil, PAGE_PATH, QuestionItem, QuestionPageResponse } from "basic"
 import { PageData, QuestionListRequest, SortType } from "../models"
 import { QuestionItemComponent } from "./QuestionItemComponent"
 
@@ -47,6 +47,9 @@ export struct QuestionListComponent {
 
   async onLoad() {
     const result = await this.getQuestionList()
+    result.rows.forEach(item => {
+      item.highLightList = this.getHighLightLabel(item.stem, this.keyword)
+    })
     this.questionList.push(...result.rows)
     this.loading = false
     if (this.page >= result.pageTotal) {
@@ -81,12 +84,33 @@ export struct QuestionListComponent {
     this.refreshing = true
   }
 
+  getHighLightLabel(stem: string, keyword: string): HighlightLabelStyle[] {
+    const result: HighlightLabelStyle[] = [] // [{text:'如何合并两个',needHighLight:false},{text:'对象',needHighLight:true}]
+    const position = stem.indexOf(keyword) // 关键字在stem中的位置
+    // 先把关键字前面的文本放入集合里 这部分不需要高亮
+    result.push({
+      text: stem.substring(0, position),
+      needHighLight: false
+    })
+    // 再把需要高亮的文本放入集合里
+    result.push({
+      text: keyword,
+      needHighLight: true
+    })
+    // 最后把关键字后面的文本放入集合里 这部分不需要高亮
+    result.push({
+      text: stem.substring(position + keyword.length),
+      needHighLight: false
+    })
+    return result
+  }
+
   build() {
     Refresh({ refreshing: $$this.refreshing, builder: this.getRefreshBuilder() }) {
       List() {
         ForEach(this.questionList, (item: QuestionItem, _:number) => {
           ListItem() {
-            QuestionItemComponent({item: item}).onClick(() => {
+            QuestionItemComponent({item: item, includeKeywordList: item.highLightList}).onClick(() => {
               Auth.getInstance().checkAuth({
                 url: PAGE_PATH.QUESTION_PAGE,
                 params: {
