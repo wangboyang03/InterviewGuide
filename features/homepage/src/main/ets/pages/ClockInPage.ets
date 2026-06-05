@@ -55,7 +55,14 @@ struct ClockInPage {
 
       Row() {
         HmCalendar({
-          selectedDays: this.seletedDays
+          selectedDays: this.seletedDays,
+          onChangeMonth: (month) => {
+            const _array = month.split('-')
+            this.getClockInResponse({
+              year: _array[0],
+              month: _array[1]
+            })
+          }
         })
           .borderRadius(8)
           .border({ width: 0.5, color: '#ededed' })
