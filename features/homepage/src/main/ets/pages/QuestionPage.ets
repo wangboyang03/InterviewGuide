@@ -132,7 +132,8 @@ struct QuestionPage {
       NavigationBar({
         title: '题目详情',
         showRightIcon: true,
-        rightIcon: $r('app.media.ic_shareIcon')
+        rightIcon: $r('app.media.ic_shareIcon'),
+        onLeftClick: () => this.getUIContext().getRouter().back()
       })
       this.TitleBuilder('题目: ')
       Text(this.currentItem.stem ?? '')

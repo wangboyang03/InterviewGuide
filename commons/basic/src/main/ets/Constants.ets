@@ -6,6 +6,8 @@ export class Constants {
   static readonly USER_STORAGE_KEY: string = "user_cip" // 用户信息存储key
   static readonly GLOBAL_CONTEXT: string = "context"
   static readonly LOGIN_EVENT: string = "loginEvent" // 登录成功发生请求的事件名
+  static readonly TRACKING_STORAGE_KEY: string = "tracking_storage_key" // 埋点信息存储key
+  static readonly TRACKING_LEARN_KEY: string = "tracking_learn_key" // 埋点信息记录key
 
   // 模块相关
   static readonly BUNDLE_NAME: string = "com.taobao.interview_success_ai" // 包名

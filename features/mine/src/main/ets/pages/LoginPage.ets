@@ -1,4 +1,6 @@
-import { Auth, Constants, Logger, LoginRequest, NavigationBar, NetworkUtil, PAGE_PATH, UserResponse } from 'basic'
+import { Auth, Constants, Logger, LoginRequest, NavigationBar, NetworkUtil, PAGE_PATH,
+  TrackingPointUtil,
+  UserResponse } from 'basic'
 import emitter from '@ohos.events.emitter'
 import { WebViewResponse } from '../models'
 
@@ -36,6 +38,7 @@ struct LoginPage {
       // AppStorage.setOrCreate<UserResponse>(Constants.USER_STORAGE_KEY, user) // 存储用户信息
       Auth.getInstance().setUser(user) // 持久化用户信息
       emitter.emit(Constants.LOGIN_EVENT) // 登录成功发送首页数据刷新事件
+      TrackingPointUtil.getInstance().report(true)
       // 判断是否需要跳转拦截
       const router = this.getUIContext().getRouter()
       const params = router.getParams() as Record<string, string> ?? {}

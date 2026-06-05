@@ -1,4 +1,4 @@
-import { Constants, TabItem } from 'basic'
+import { Constants, TabItem, TrackingPointUtil } from 'basic'
 import { HomePageView } from 'homepage'
 import { InterView } from 'interview'
 import { MineView } from 'mine'
@@ -35,6 +35,10 @@ struct Index {
       name: 'mine'
     }
   ]
+
+  aboutToAppear(): void {
+    TrackingPointUtil.getInstance().report(true)
+  }
 
   build() {
     Tabs({index: $$this.activatedIndex}) {
