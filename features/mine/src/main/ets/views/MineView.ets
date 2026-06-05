@@ -47,7 +47,7 @@ export struct MineView {
               })
             })
         }
-        ClockSignIn({ clockInCount: this.user.clockinNumbers })
+        ClockSignIn({ clockInCount: this.user.clockinNumbers }).onClick(() => BasicTool.getInstance().getClockInNumber()) // 签到组件
       }
       .width('100%')
       .height(100)

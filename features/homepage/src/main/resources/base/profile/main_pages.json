@@ -1,6 +1,7 @@
 {
   "src": [
     "pages/QuestionPage",
-    "pages/SearchPage"
+    "pages/SearchPage",
+    "pages/ClockInPage"
   ]
 }

@@ -26,6 +26,7 @@ export class Constants {
   static readonly OPTION_MENU = 'question/opt' // 操作试题点赞或收藏
   static readonly UN_OPTION_MENU = 'question/unOpt' // 操作试题取消点赞或收藏
   static readonly TRACKING_TIME = 'time/tracking' // 学习信息-统计时长埋点
+  static readonly CLOCKIN = 'clockin' // 首页-打卡接口
 }
 
 export class PAGE_PATH {
@@ -33,4 +34,5 @@ export class PAGE_PATH {
   static readonly QUESTION_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/QuestionPage`
   static readonly WEB_VIEW_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/WebPage`
   static readonly SEARCH_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/SearchPage`
+  static readonly CLOCK_IN_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/ClockInPage`
 }

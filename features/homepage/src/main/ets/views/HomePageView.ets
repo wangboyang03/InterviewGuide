@@ -1,9 +1,10 @@
-import { ClockSignIn, Constants, SearchBox } from "basic"
+import { BasicTool, ClockSignIn, Constants, SearchBox, UserResponse } from "basic"
 import { HomePageCategory } from "../components"
 
 @Component
 export struct HomePageView {
   @StorageProp(Constants.SAFE_TOP_HEIGHT_KEY) topHeight: number = 0
+  @StorageProp(Constants.USER_STORAGE_KEY) user: UserResponse = {} as UserResponse
   banners: ResourceStr[] = [
     $r("app.media.banner_qa"),
     $r("app.media.banner_pj"),
@@ -16,8 +17,8 @@ export struct HomePageView {
       Column() {
         SearchBox() {
           ClockSignIn({
-            clockInCount: 0
-          }) // 签到组件
+            clockInCount: this.user.clockinNumbers
+          }).onClick(() => BasicTool.getInstance().getClockInNumber()) // 签到组件
         } // 搜索框组件
 
         this.getSwiperBuilder() // 轮播图
