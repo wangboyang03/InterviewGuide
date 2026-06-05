@@ -8,6 +8,7 @@ export class Constants {
   static readonly LOGIN_EVENT: string = "loginEvent" // 登录成功发生请求的事件名
   static readonly TRACKING_STORAGE_KEY: string = "tracking_storage_key" // 埋点信息存储key
   static readonly TRACKING_LEARN_KEY: string = "tracking_learn_key" // 埋点信息记录key
+  static readonly PLAY_SOUND_WORD_URL: string = "https://dict.youdao.com/dictvoice?type=1&audio="
 
   // 模块相关
   static readonly BUNDLE_NAME: string = "com.taobao.interview_success_ai" // 包名
@@ -38,4 +39,5 @@ export class PAGE_PATH {
   static readonly SEARCH_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/SearchPage`
   static readonly CLOCK_IN_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/ClockInPage`
   static readonly STUDY_TIME_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/StudyTimePage`
+  static readonly WORDS_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/WordsPage`
 }

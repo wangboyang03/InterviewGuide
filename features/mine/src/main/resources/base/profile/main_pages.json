@@ -2,6 +2,7 @@
   "src": [
     "pages/LoginPage",
     "pages/WebPage",
-    "pages/StudyTimePage"
+    "pages/StudyTimePage",
+    "pages/WordsPage"
   ]
 }

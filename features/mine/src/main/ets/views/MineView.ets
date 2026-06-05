@@ -84,9 +84,7 @@ export struct MineView {
 
       Column() {
         this.toolsBuilder({
-          icon: $r('app.media.ic_mine_notes'), name: '开发常用词', onClick: () => {
-            // TODO
-          }
+          icon: $r('app.media.ic_mine_notes'), name: '开发常用词', onClick: () => this.getUIContext().getRouter().pushUrl({url: PAGE_PATH.WORDS_PAGE})
         })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' })
