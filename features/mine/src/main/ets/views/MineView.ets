@@ -73,9 +73,9 @@ export struct MineView {
           icon: $r('app.media.ic_mine_study'),
           name: '累计学时',
           other: BasicTool.getInstance().formatTimeFromSeconds(this.user.totalTime),
-          onClick: () => {
-            // TODO
-          }
+          onClick: (): void => Auth.getInstance().checkAuth({
+            url: PAGE_PATH.STUDY_TIME_PAGE
+          })
         })
       }
       .backgroundColor($r('app.color.white'))

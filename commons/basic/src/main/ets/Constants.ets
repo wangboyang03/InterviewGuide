@@ -28,6 +28,7 @@ export class Constants {
   static readonly TRACKING_TIME = 'time/tracking' // 学习信息-统计时长埋点
   static readonly CLOCKIN = 'clockin' // 首页-打卡接口
   static readonly CLOCK_IN_INFO = 'clockinInfo' // 获取打卡信息接口
+  static readonly STUDY_INFO = 'studyInfo' // 获取学习信息接口
 }
 
 export class PAGE_PATH {
@@ -36,4 +37,5 @@ export class PAGE_PATH {
   static readonly WEB_VIEW_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/WebPage`
   static readonly SEARCH_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/SearchPage`
   static readonly CLOCK_IN_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/ClockInPage`
+  static readonly STUDY_TIME_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/StudyTimePage`
 }

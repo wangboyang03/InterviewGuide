@@ -1,6 +1,7 @@
 {
   "src": [
     "pages/LoginPage",
-    "pages/WebPage"
+    "pages/WebPage",
+    "pages/StudyTimePage"
   ]
 }
