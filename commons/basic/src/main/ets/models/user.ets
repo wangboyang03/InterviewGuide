@@ -41,3 +41,20 @@ export interface ClockInResponse {
    */
   nickName: string;
 }
+
+export interface ClockInItem {
+  id: string,
+  createdAt: string
+}
+
+export interface ClockInPageResponse {
+  flag?: boolean
+  clockinNumbers: number
+  totalClockinNumber: number
+  clockins: ClockInItem[]
+}
+
+export interface ClockInPageRequest {
+  year: string,
+  month: string
+}

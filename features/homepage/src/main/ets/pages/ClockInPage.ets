@@ -1,5 +1,5 @@
-import { HmCalendar } from '@ohmos/calendar'
-import { NavigationBar } from 'basic'
+import { HmCalendar, HmCalendarSelectedDay } from '@ohmos/calendar'
+import { ClockInPageRequest, ClockInPageResponse, Constants, NavigationBar, NetworkUtil } from 'basic'
 
 interface DayBuilderParams {
   day: number
@@ -9,13 +9,40 @@ interface DayBuilderParams {
 @Entry
 @Component
 struct ClockInPage {
+  @State clickInInformation: ClockInPageResponse = {
+    clockinNumbers: 0,
+    totalClockinNumber: 0,
+    clockins: []
+  }
+  @State seletedDays: HmCalendarSelectedDay[] = []
+
+  aboutToAppear(): void {
+    const currentDate = new Date()
+    this.getClockInResponse({
+      year: String(currentDate.getFullYear()),
+      month: String(currentDate.getMonth() + 1),
+    })
+  }
+
+  /**
+   * 获取打卡信息
+   */
+  async getClockInResponse(params: ClockInPageRequest) {
+    const result = await NetworkUtil.getInstance().request<ClockInPageResponse>({
+      url: Constants.CLOCK_IN_INFO,
+      params
+    })
+    this.clickInInformation = result
+    this.seletedDays = result.clockins.map(item => ({date: item.createdAt} as HmCalendarSelectedDay))
+  }
+
   build() {
     Column({ space: 16 }) {
       // 导航条
       NavigationBar({ title: '每日打卡', showRightIcon: false })
       Row() {
-        this.dayBuilder({ day: 100, text: '累计打卡' })
-        this.dayBuilder({ day: 10, text: '连续打卡' })
+        this.dayBuilder({ day: this.clickInInformation.totalClockinNumber, text: '累计打卡' })
+        this.dayBuilder({ day: this.clickInInformation.clockinNumbers, text: '连续打卡' })
       }
       .padding({
         top: 10,
@@ -28,7 +55,7 @@ struct ClockInPage {
 
       Row() {
         HmCalendar({
-          selectedDays: []
+          selectedDays: this.seletedDays
         })
           .borderRadius(8)
           .border({ width: 0.5, color: '#ededed' })
