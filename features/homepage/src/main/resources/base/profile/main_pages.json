@@ -2,6 +2,7 @@
   "src": [
     "pages/QuestionPage",
     "pages/SearchPage",
-    "pages/ClockInPage"
+    "pages/ClockInPage",
+    "pages/RDBPage"
   ]
 }

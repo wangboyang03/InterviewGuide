@@ -41,4 +41,5 @@ export class PAGE_PATH {
   static readonly STUDY_TIME_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/StudyTimePage`
   static readonly WORDS_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/WordsPage`
   static readonly RECORDING_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/RecordingPage`
+  static readonly RDB_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/RDBPage`
 }
