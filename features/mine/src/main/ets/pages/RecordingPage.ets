@@ -1,5 +1,5 @@
 import { Permissions, Want } from '@kit.AbilityKit';
-import { ATManager, NavigationBar } from 'basic';
+import { ATManager, Logger, NavigationBar } from 'basic';
 import { promptAction } from '@kit.ArkUI';
 import common from '@ohos.app.ability.common';
 import { fileIo } from '@kit.CoreFileKit';
@@ -21,6 +21,8 @@ struct RecordingPage {
   // 录音相关变量
   fileFd?: number
   recordObject?: media.AVRecorder
+  timer?: number
+  maxAmplitude: number = 0
 
   aboutToAppear(): void {
     this.requestPermission()
@@ -79,6 +81,11 @@ struct RecordingPage {
     this.recordObject = recordObject
     // 5.开始录音
     this.recordObject.start()
+    // 6.获取输入声音的最大振幅 使用心跳检测 最大30000
+    this.timer = setInterval(async () => {
+      this.maxAmplitude = await recordObject.getAudioCapturerMaxAmplitude()
+      Logger.info('maxAmplitude', this.maxAmplitude.toString())
+    }, 100)
   }
 
   async stopRecord() {
@@ -86,6 +93,7 @@ struct RecordingPage {
       this.recordObject?.stop()
       this.recordObject.release()
       fileIo.closeSync(this.fileFd)
+      clearInterval(this.timer)
     }
   }
 
