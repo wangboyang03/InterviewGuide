@@ -88,7 +88,9 @@ export struct MineView {
         })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' })
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈' })
+        this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈', onClick: (): void => Auth.getInstance().checkAuth({
+            url: PAGE_PATH.RECORDING_PAGE
+          }) })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' })
         this.toolsBuilder({
           icon: $r('app.media.ic_mine_setting'), name: '设置', onClick: () => {

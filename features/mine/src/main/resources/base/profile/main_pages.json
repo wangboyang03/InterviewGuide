@@ -3,6 +3,7 @@
     "pages/LoginPage",
     "pages/WebPage",
     "pages/StudyTimePage",
-    "pages/WordsPage"
+    "pages/WordsPage",
+    "pages/RecordingPage"
   ]
 }

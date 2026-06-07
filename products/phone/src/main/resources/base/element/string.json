@@ -13,8 +13,8 @@
       "value": "面试通AI版"
     },
     {
-      "name": "write_photo",
-      "value": "申请权限"
+      "name": "reason_microphone",
+      "value": "面试通AI版想要获取当前设备的麦克风权限,来录制面试录音的音频文件。如果用户不授权,相关功能可能无法正常使用。"
     }
   ]
 }
