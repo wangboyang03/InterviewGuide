@@ -1,4 +1,5 @@
 import { abilityAccessCtrl } from '@kit.AbilityKit';
+import { ATManager } from 'basic';
 
 @Entry
 @Component
@@ -6,18 +7,17 @@ struct RecordingPage {
   @State message: string = 'Hello World';
 
   async aboutToAppear(): Promise<void> {
-    try {
-      const atManager = abilityAccessCtrl.createAtManager()
-      const context = this.getUIContext().getHostContext()
-      if (!!context) {
-        const result = await atManager.requestPermissionsFromUser(context, ['ohos.permission.MICROPHONE'])
-        const flag = result.authResults.every(item => item == abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)
-        if (flag) {
-          this.getUIContext().getPromptAction().showToast({message: '授权成功'})
-        }
+    const flag = await ATManager.getInstance().getAccessFromUser(['ohos.permission.MICROPHONE'])
+    if (!!flag) {
+      this.getUIContext().getPromptAction().showToast({message:'Permission granted'})
+    } else {
+      const flag = await ATManager.getInstance().getAccessFromSetting(['ohos.permission.MICROPHONE'])
+      if (!!flag) {
+        this.getUIContext().getPromptAction().showToast({message:'Permission granted'})
+      } else {
+        this.getUIContext().getPromptAction().showToast({message:'Permission denied'})
+        this.getUIContext().getRouter().back()
       }
-    } catch (error) {
-      this.getUIContext().getPromptAction().showToast({message: `授权失败,${error}`})
     }
   }
 
