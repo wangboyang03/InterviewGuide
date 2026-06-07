@@ -1,5 +1,5 @@
 import { Permissions, Want } from '@kit.AbilityKit';
-import { ATManager, Logger, NavigationBar } from 'basic';
+import { ATManager, AudioAmplitudeStyle, Logger, NavigationBar } from 'basic';
 import { promptAction } from '@kit.ArkUI';
 import common from '@ohos.app.ability.common';
 import { fileIo } from '@kit.CoreFileKit';
@@ -22,7 +22,7 @@ struct RecordingPage {
   fileFd?: number
   recordObject?: media.AVRecorder
   timer?: number
-  maxAmplitude: number = 0
+  @State maxAmplitude: number = 0 // 每次保存的最大振幅必须是状态变量 否则无法触发视图刷新
 
   aboutToAppear(): void {
     this.requestPermission()
@@ -115,6 +115,7 @@ struct RecordingPage {
         const UIAbilityContext = this.getUIContext().getHostContext() as common.UIAbilityContext
         UIAbilityContext.startAbility(wantParams)
       })
+      Row() {AudioAmplitudeStyle({maxAmplitude: this.maxAmplitude})}.width('80%')
       Button("开始录音").onClick((event: ClickEvent) => this.startRecord())
       Button("停止录音").onClick((event: ClickEvent) => this.stopRecord())
     }
