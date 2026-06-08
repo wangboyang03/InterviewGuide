@@ -1,4 +1,4 @@
-import { BasicTool, ClockSignIn, Constants, Logger, SearchBox, UserResponse } from "basic"
+import { BasicTool, ClockSignIn, Constants, Logger, PAGE_PATH, SearchBox, UserResponse } from "basic"
 import { HomePageCategory } from "../components"
 import { pasteboard } from "@kit.BasicServicesKit"
 
@@ -16,21 +16,25 @@ export struct HomePageView {
     // Text('面试通首页')
     Scroll() {
       Column() {
-        PasteButton({
-          text: PasteDescription.PASTE,
-          icon: PasteIconStyle.LINES,
-          buttonType: ButtonType.ROUNDED_RECTANGLE // Capsule/ROUNDED_RECTANGLE胶囊 Circle圆形 Normal矩形
-        }).onClick((event: ClickEvent, result: PasteButtonOnClickResult) => {
-          if (PasteButtonOnClickResult.SUCCESS == result) {
-            pasteboard.getSystemPasteboard().getData((error: BusinessError, pasteData: pasteboard.PasteData) => {
-              if (error) {
-                Logger.error(`Failed to get paste data. Code is ${error.code}, message is ${error.message}`)
-                return;
-              }
-              this.getUIContext().getPromptAction().showToast({message: pasteData.getPrimaryText()})
-            })
-          }
-        })
+        Row() {
+          PasteButton({
+            text: PasteDescription.PASTE,
+            icon: PasteIconStyle.LINES,
+            buttonType: ButtonType.ROUNDED_RECTANGLE // Capsule/ROUNDED_RECTANGLE胶囊 Circle圆形 Normal矩形
+          }).onClick((event: ClickEvent, result: PasteButtonOnClickResult) => {
+            if (PasteButtonOnClickResult.SUCCESS == result) {
+              pasteboard.getSystemPasteboard().getData((error: BusinessError, pasteData: pasteboard.PasteData) => {
+                if (error) {
+                  Logger.error(`Failed to get paste data. Code is ${error.code}, message is ${error.message}`)
+                  return;
+                }
+                this.getUIContext().getPromptAction().showToast({message: pasteData.getPrimaryText()})
+              })
+            }
+          })
+          Button('数据库').onClick((_: ClickEvent) => this.getUIContext().getRouter().pushUrl({url: PAGE_PATH.RDB_PAGE}))
+        }
+
         SearchBox() {
           ClockSignIn({
             clockInCount: this.user.clockinNumbers

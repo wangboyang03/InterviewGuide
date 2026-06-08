@@ -1,39 +1,145 @@
-import relationalStore from '@ohos.data.relationalStore'
+import { relationalStore } from '@kit.ArkData'
+
+interface Article {
+  id: number
+  title: string
+  content: string
+  create_time: number
+}
 
 @Entry
 @Component
 struct RDBPage {
-  rdbStore?: relationalStore.RdbStore
-  tableName?: string
+  tableName = 'article'
+  store?: relationalStore.RdbStore
+  @State list: Article[] = []
+  @State total: number = 0
 
   /**
-   * 数据库建库建表
+   * 创建数据库表
    */
-  async createRDBStore() {
-    // 1.创建或打开数据库 没有就去创建
-    const context = this.getUIContext().getHostContext()
-    const rdbStore = relationalStore.getRdbStoreSync(context, {name: 'interview_tong.db', securityLevel: relationalStore.SecurityLevel.S1})
-    if (rdbStore) {
-      rdbStore.executeSql(`
-      CREATE TABLE IF NOT EXISTS ${this.tableName} (
+  async createStore() {
+    try {
+      // 1. 获取或创建数据库
+      const ctx = this.getUIContext().getHostContext()!
+      const store = await relationalStore.getRdbStore(ctx,
+        { name: 'interview_tong.db', securityLevel: relationalStore.SecurityLevel.S1 })
+      // 2. 执行SQL语句建表
+      await store.executeSql(`
+        CREATE TABLE IF NOT EXISTS ${this.tableName} (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT NOT NULL,
           content TEXT NOT NULL,
           create_time INTEGER NOT NULL
         )
-      `)
-      this.rdbStore = rdbStore
+      `).catch(() => {
+        this.getUIContext().getPromptAction().showToast({ message: '建表失败' })
+      })
+      // 3. 全局存储数据库
+      this.store = store
+      this.getUIContext().getPromptAction().showToast({ message: '数据库和表初始化成功' })
+    } catch (e) {
+      this.getUIContext().getPromptAction().showToast({ message: '建库失败' })
+    }
+  }
+
+  /**
+   * 增
+   */
+  insertData() {
+    if (this.store) {
+      this.store.insert(this.tableName, {
+        id: null, // 自己自增
+        title: `测试标题${Math.random()}}`,
+        content: `测试文章内容${Math.random()}}`,
+        create_time: Date.now()
+      }).catch(() => {
+        this.getUIContext().getPromptAction().showToast({ message: '插入失败' })
+      })
+      this.getUIContext().getPromptAction().showToast({ message: '插入成功' })
+    } else {
+      this.getUIContext().getPromptAction().showToast({ message: '数据库不存在' })
+    }
+  }
+
+  /**
+   * 查询总条数
+   */
+  async queryTotalCount() {
+    if (this.store) {
+      // 1. 创建查询的谓词对象
+      const predicates = new relationalStore.RdbPredicates(this.tableName)
+      // 2. 执行查询语句
+      const res = await this.store.query(predicates).catch(() => {
+      })
+      // 3. 结果赋值
+      this.total = res ? res.rowCount : 0
+    } else {
+      this.getUIContext().getPromptAction().showToast({ message: '查询失败' })
+    }
+  }
+
+  /**
+   * 查询所有数据
+   */
+  async queryData() {
+    if (this.store) {
+      try {
+        // 1. 创建查询的谓词对象
+        const predicates = new relationalStore.RdbPredicates(this.tableName)
+        // 2. 执行查询语句
+        const resultSet = await this.store.query(predicates).catch(() => {
+        })
+        // 3. 处理数据
+        const list: Article[] = []
+        if (resultSet) {
+          while (resultSet.goToNextRow()) { // 如果可以去下一行，说明还有数据
+            // const index = res.getColumnIndex('id')
+            // const value = res.getLong(index)
+            // const index2 = res.getColumnIndex('title')
+            // const value2 = res.getString(index2)
+            // hmLogger.info(`数据：${value}----${value2}`)
+            list.push({
+              id: resultSet.getLong(resultSet.getColumnIndex('id')),
+              title: resultSet.getString(resultSet.getColumnIndex('title')),
+              content: resultSet.getString(resultSet.getColumnIndex('content')),
+              create_time: resultSet.getLong(resultSet.getColumnIndex('create_time'))
+            })
+          }
+          this.list = list
+          resultSet.close()
+        }
+
+      } catch (e) {
+        this.getUIContext().getPromptAction().showToast({ message: '查询失败' })
+      }
     }
   }
 
   aboutToAppear(): void {
-    this.createRDBStore()
+    this.createStore()
   }
 
   build() {
-    Column()
-      .width('100%')
-      .height('100%')
-      .padding(20)
+    Column() {
+      Text(`总条数： ${this.total}`)
+      Text('--------------------------')
+      Text(JSON.stringify(this.list))
+      Button('添加一条数据')
+        .onClick(() => {
+          this.insertData()
+        })
+      Button('查询总条数')
+        .onClick(() => {
+          this.queryTotalCount()
+        })
+      Button('查询所有数据')
+        .onClick(() => {
+          this.queryData()
+        })
+    }
+    .padding({ top: 100 })
+    .height('100%')
+    .width('100%')
   }
 }
