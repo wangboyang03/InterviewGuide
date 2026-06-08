@@ -9,6 +9,8 @@ import { ATManager, AudioAmplitudeStyle,
 import { promptAction } from '@kit.ArkUI';
 import { fileIo } from '@kit.CoreFileKit';
 import media from '@ohos.multimedia.media';
+import { InputFileNameDialog } from '../views/InputFileNameDialog';
+import { AudioPlayerSheet } from '../views/AudioPlayerBind';
 
 @Entry
 @Component
@@ -33,6 +35,22 @@ struct RecordingPage {
   @State audioTotal: number = 0
   @State currentProgram: number = 0
   @State list: InterviewAudioItem[] = []
+  @State currentItem: InterviewAudioItem = {} as InterviewAudioItem
+  inputDialog = new CustomDialogController({
+    builder: InputFileNameDialog({
+      name: this.currentItem.name,
+      onSubmit: async (name) => {
+        if (name) {
+          this.currentItem.name = name
+          await AudioDataBaseStorage.getInstance().update(this.currentItem)
+          this.list = await AudioDataBaseStorage.getInstance().query(this.user.id)
+          this.inputDialog.close()
+        }
+      }
+    }),
+    customStyle: true
+  })
+  @State isShowBind:boolean =  false
 
   async aboutToAppear(): Promise<void> {
     this.requestPermission()
@@ -118,8 +136,10 @@ struct RecordingPage {
             ListItem() {
               AudioItemComponent({
                 item
-              })
-            }
+              }).onClick(() => this.isShowBind = true)
+            }.swipeAction({
+              end: this.ListItemSwiperBuilder(item)
+            })
           })
         }
         .width('100%')
@@ -138,5 +158,40 @@ struct RecordingPage {
     }
     .width('100%')
     .height('100%')
+    .bindContentCover($$this.isShowBind, this.ShowAudioPlayerBind())
   }
+
+  @Builder ListItemSwiperBuilder(item: InterviewAudioItem) {
+    Row() {
+      Text('编辑')
+        .actionButton($r('app.color.common_blue'))
+        .onClick(async () => {
+          this.currentItem = item
+          this.inputDialog.open()
+        })
+      Text('删除')
+        .actionButton('#FF0033')
+        .onClick(async () => {
+          if (!!item.id) {
+            await AudioDataBaseStorage.getInstance().delete(item.id)
+            this.list = await AudioDataBaseStorage.getInstance().query(this.user.id)
+          }
+        })
+    }
+    .height('100%')
+  }
+
+  @Builder ShowAudioPlayerBind() {
+    Column() {
+      AudioPlayerSheet()
+    }
+  }
+}
+
+@Extend(Text) function actionButton(color: ResourceColor) {
+  .width(80)
+  .aspectRatio(1)
+  .backgroundColor(color)
+  .textAlign(TextAlign.Center)
+  .fontColor($r('app.color.white'))
 }

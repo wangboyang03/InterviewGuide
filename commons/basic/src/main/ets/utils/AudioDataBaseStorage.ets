@@ -107,4 +107,19 @@ export class AudioDataBaseStorage {
       return Promise.reject('出现错误')
     }
   }
+
+  // 删除
+  async delete(id: number) {
+    try {
+      const predicates = new relationalStore.RdbPredicates(this.tableName)
+      predicates.equalTo('id', id)
+      const rowCount = await this.store?.delete(predicates)
+      if (rowCount == undefined || rowCount <= 0) {
+        return Promise.reject('删除失败')
+      } else {
+        return Promise.resolve()
+      }
+    } catch (e) {
+    }
+  }
 }
