@@ -5,6 +5,7 @@ import { fileIo } from "@kit.CoreFileKit"
 import { Logger } from "../utils/Logger"
 import { InterviewAudioItem } from "../utils"
 import { UserResponse } from "../models"
+import dayjs from "dayjs"
 
 @Component
 export struct AudioRecordComponent {
@@ -87,7 +88,7 @@ export struct AudioRecordComponent {
               this.onRecorderData({
                 id: null,
                 user_id: this.user.id,
-                name: this.filePath ?? "",
+                name: dayjs().format("YYYY年MM月DD日_HH时mm分ss秒"),
                 path: this.filePath ?? "",
                 duration: Date.now() - this.startRecordTime,
                 size: fileStat.size,

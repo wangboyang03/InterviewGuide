@@ -1,16 +1,19 @@
 import { Permissions, Want } from '@kit.AbilityKit';
-import { ATManager, AudioAmplitudeStyle, AudioItemComponent,
-  AudioRecordComponent,
-  InterviewAudioItem, Logger, NavigationBar } from 'basic';
+import { ATManager, AudioAmplitudeStyle,
+  AudioDataBaseStorage,
+  AudioItemComponent, AudioRecordComponent,
+  Auth,
+  Constants,
+  InterviewAudioItem, Logger, NavigationBar,
+  UserResponse } from 'basic';
 import { promptAction } from '@kit.ArkUI';
-import common from '@ohos.app.ability.common';
 import { fileIo } from '@kit.CoreFileKit';
 import media from '@ohos.multimedia.media';
 
 @Entry
 @Component
 struct RecordingPage {
-  // @State message: string = 'Hello World';
+  @StorageProp(Constants.USER_STORAGE_KEY) user: UserResponse = {} as UserResponse
   permissions: Permissions[] = ['ohos.permission.MICROPHONE']
   confirmPopupParams: promptAction.ShowDialogOptions = {
     title: '提示',
@@ -29,10 +32,13 @@ struct RecordingPage {
   avPlayer?: media.AVPlayer
   @State audioTotal: number = 0
   @State currentProgram: number = 0
-  @State list: InterviewAudioItem[] = [{} as InterviewAudioItem, {} as InterviewAudioItem]
+  @State list: InterviewAudioItem[] = []
 
-  aboutToAppear(): void {
+  async aboutToAppear(): Promise<void> {
     this.requestPermission()
+    await AudioDataBaseStorage.getInstance().initStore() // 一进入页面就要初始化数据库
+    this.list = await AudioDataBaseStorage.getInstance().query(this.user.id)
+    console.log(JSON.stringify(this.list))
   }
 
   /**
@@ -111,15 +117,7 @@ struct RecordingPage {
           ForEach(this.list, (item: InterviewAudioItem) => {
             ListItem() {
               AudioItemComponent({
-                item: {
-                  id: 1,
-                  name: '2024年10月01日_10点10分10秒',
-                  path: '/data/el/xxx',
-                  user_id: '100',
-                  duration: 10000,
-                  size: 10000,
-                  create_time: 10000
-                }
+                item
               })
             }
           })
@@ -130,7 +128,13 @@ struct RecordingPage {
       .width('100%')
       .layoutWeight(1)
 
-      AudioRecordComponent()
+      AudioRecordComponent({
+        onRecorderData: async (item) => {
+          // 在此插入数据
+          await AudioDataBaseStorage.getInstance().insert(item)
+          this.list = await AudioDataBaseStorage.getInstance().query(this.user.id)
+        },
+      })
     }
     .width('100%')
     .height('100%')
