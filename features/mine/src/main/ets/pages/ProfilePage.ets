@@ -1,6 +1,7 @@
 import { Auth, Constants, NavigationBar, NetworkUtil, UserResponse } from 'basic'
 import { CustomLoadingDialog } from 'homepage'
-
+import { fileIo, picker } from '@kit.CoreFileKit'
+import { FormData } from '@ohos/axios'
 
 @Entry
 @Component
@@ -28,6 +29,52 @@ struct ProfilePage {
     }
   }
 
+  async updateAvatar() {
+    try {
+      // 1.从相册选择一张图片并返回uri地址
+      const photoSelectOptions = new picker.PhotoSelectOptions()
+      photoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE
+      photoSelectOptions.maxSelectNumber = 1
+      const photoPicker = new picker.PhotoViewPicker()
+      const photoSelectResult = await photoPicker.select(photoSelectOptions)
+      if (photoSelectResult.photoUris.length > 0) {
+        const photoUri = photoSelectResult.photoUris[0]
+        // this.getUIContext().getPromptAction().showDialog({message:photoUri})
+        // 2.根据uri地址复制文件到沙箱
+        const context = this.getUIContext().getHostContext()
+        if (context) {
+          const tempPath = context.cacheDir + '/' + Date.now() + '.jpg'
+          const file = fileIo.openSync(photoUri, fileIo.OpenMode.READ_ONLY) // 打开相册里的文件
+          const newFile = fileIo.openSync(tempPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+          fileIo.copyFileSync(file.fd, newFile.fd)
+          fileIo.closeSync(file.fd)
+          fileIo.closeSync(newFile.fd)
+          // this.getUIContext().getPromptAction().showDialog({message: newFile.path})
+          // 3. 创建一个fromData对象 把键值传入 返回对象发送网络请求
+          const formData = new FormData()
+          const fileName = tempPath.split('/').pop()
+          formData.append('file', `internal://cache/${fileName}`)
+          await NetworkUtil.getInstance().request<null>({
+            url: Constants.UPDATE_AVATAR,
+            method: 'post',
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            data: formData, context
+          })
+          // 4.网络请求成功后 更新本地头像
+          const result = await NetworkUtil.getInstance().request<UserResponse>({
+            url: Constants.USER_INFO
+          })
+          this.user.avatar = result.avatar
+          Auth.getInstance().setUser(this.user)
+        }
+      }
+    } catch (error) {
+      this.getUIContext().getPromptAction().showToast({message: '更新头像失败'})
+    }
+  }
+
   build() {
     Column() {
       NavigationBar({ title: '编辑资料', showRightIcon: false })
@@ -41,9 +88,7 @@ struct ProfilePage {
               .aspectRatio(1)
               .borderRadius(20)
               .border({ width: 0.5, color: $r('app.color.common_gray_border') })
-              .onClick(() => {
-                // TODO 更新头像
-              })
+              .onClick(() => this.updateAvatar())
           }
           .width('100%')
           .height(60)

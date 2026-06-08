@@ -2,6 +2,7 @@
   "modelVersion": "6.1.1",
   "description": "Please describe the basic information.",
   "dependencies": {
+    "@ohos/axios": "^2.2.10",
     "@ohmos/calendar": "^2.1.4"
   },
   "devDependencies": {

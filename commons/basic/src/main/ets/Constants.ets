@@ -31,6 +31,8 @@ export class Constants {
   static readonly CLOCK_IN_INFO = 'clockinInfo' // 获取打卡信息接口
   static readonly STUDY_INFO = 'studyInfo' // 获取学习信息接口
   static readonly UPDATE_PROFILE = 'userInfo/profile' // 个人中心-完善用户头像和昵称
+  static readonly UPDATE_AVATAR = 'userInfo/avatar' // 个人中心-修改用户头像
+  static readonly USER_INFO = 'userInfo' // 个人中心-用户信息接口
 }
 
 export class PAGE_PATH {
