@@ -4,6 +4,8 @@
     "pages/WebPage",
     "pages/StudyTimePage",
     "pages/WordsPage",
-    "pages/RecordingPage"
+    "pages/RecordingPage",
+    "pages/SettingsPage",
+    "pages/ProfilePage"
   ]
 }

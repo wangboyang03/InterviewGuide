@@ -93,9 +93,9 @@ export struct MineView {
           }) })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' })
         this.toolsBuilder({
-          icon: $r('app.media.ic_mine_setting'), name: '设置', onClick: () => {
-            // TODO
-          }
+          icon: $r('app.media.ic_mine_setting'), name: '设置', onClick: (): void => Auth.getInstance().checkAuth({
+            url: PAGE_PATH.SETTINGS_PAGE
+          })
         })
       }
       .backgroundColor($r('app.color.white'))

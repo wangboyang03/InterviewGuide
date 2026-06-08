@@ -30,6 +30,7 @@ export class Constants {
   static readonly CLOCKIN = 'clockin' // 首页-打卡接口
   static readonly CLOCK_IN_INFO = 'clockinInfo' // 获取打卡信息接口
   static readonly STUDY_INFO = 'studyInfo' // 获取学习信息接口
+  static readonly UPDATE_PROFILE = 'userInfo/profile' // 个人中心-完善用户头像和昵称
 }
 
 export class PAGE_PATH {
@@ -42,4 +43,6 @@ export class PAGE_PATH {
   static readonly WORDS_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/WordsPage`
   static readonly RECORDING_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/RecordingPage`
   static readonly RDB_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/RDBPage`
+  static readonly SETTINGS_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/SettingsPage`
+  static readonly PROFILE_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/ProfilePage`
 }
