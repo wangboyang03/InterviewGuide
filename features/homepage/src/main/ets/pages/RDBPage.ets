@@ -1,6 +1,6 @@
-import { relationalStore } from '@kit.ArkData'
+import { relationalStore, ValuesBucket } from '@kit.ArkData'
 
-interface Article {
+interface Article extends ValuesBucket {
   id: number
   title: string
   content: string
@@ -116,6 +116,31 @@ struct RDBPage {
     }
   }
 
+  /**
+   * 修改数据的方法
+   * 继承类型解决类型不匹配问题
+   */
+  async updateDataFromList() {
+    try {
+      if (this.store) {
+        // 1.先从列表中找到第一条数据
+        const item = this.list[0]
+        // 2.修改数据的字段
+        item.title = `修改后的标题${Math.random()}修改后的标题`
+        // 3.创建谓词对象
+        const predicates = new relationalStore.RdbPredicates(this.tableName)
+        predicates.equalTo('id', item.id) // 通过主键找到数据
+        const res = await this.store.update(item, predicates)
+        if (res == undefined || res == -1) {
+          this.getUIContext().getPromptAction().showToast({ message: '修改失败' })
+        }
+        this.getUIContext().getPromptAction().showToast({ message: '修改成功' })
+      }
+    } catch (error) {
+     // 日志。
+    }
+  }
+
   aboutToAppear(): void {
     this.createStore()
   }
@@ -136,6 +161,10 @@ struct RDBPage {
       Button('查询所有数据')
         .onClick(() => {
           this.queryData()
+        })
+      Button('修改数据第一条')
+        .onClick(() => {
+          this.updateDataFromList()
         })
     }
     .padding({ top: 100 })

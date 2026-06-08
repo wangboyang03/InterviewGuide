@@ -1,5 +1,7 @@
 import { Permissions, Want } from '@kit.AbilityKit';
-import { ATManager, AudioAmplitudeStyle, Logger, NavigationBar } from 'basic';
+import { ATManager, AudioAmplitudeStyle, AudioItemComponent,
+  AudioRecordComponent,
+  InterviewAudioItem, Logger, NavigationBar } from 'basic';
 import { promptAction } from '@kit.ArkUI';
 import common from '@ohos.app.ability.common';
 import { fileIo } from '@kit.CoreFileKit';
@@ -27,6 +29,7 @@ struct RecordingPage {
   avPlayer?: media.AVPlayer
   @State audioTotal: number = 0
   @State currentProgram: number = 0
+  @State list: InterviewAudioItem[] = [{} as InterviewAudioItem, {} as InterviewAudioItem]
 
   aboutToAppear(): void {
     this.requestPermission()
@@ -54,50 +57,6 @@ struct RecordingPage {
       }
     } catch (error) {
       this.getUIContext().getRouter().back()
-    }
-  }
-
-  /**
-   * 开始录制音频和停止录制
-   */
-  async startRecord() {
-    // 1.准备文件路径
-    const context = this.getUIContext().getHostContext()
-    const filePath = context?.filesDir + '/' + Date.now() + '.mp3'
-    // 2.以创建或读写模式打开文件
-    const file = fileIo.openSync(filePath, (fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE))
-    this.file = file
-    // 3.创建录音配置对象
-    const config: media.AVRecorderConfig = {
-      audioSourceType: media.AudioSourceType.AUDIO_SOURCE_TYPE_MIC,
-      profile: {
-        audioBitrate: 100000,
-        audioChannels: 1,
-        audioCodec: media.CodecMimeType.AUDIO_AAC,
-        audioSampleRate: 48000,
-        fileFormat: media.ContainerFormatType.CFT_MPEG_4A, // 封装格式，当前只支持m4a
-      },
-      url: `fd://${this.file.fd}` // 文件句柄
-    }
-    // 4.创建录音实例
-    const recordObject = await media.createAVRecorder()
-    await recordObject.prepare(config)
-    this.recordObject = recordObject
-    // 5.开始录音
-    this.recordObject.start()
-    // 6.获取输入声音的最大振幅 使用心跳检测 最大30000
-    this.timer = setInterval(async () => {
-      this.maxAmplitude = await recordObject.getAudioCapturerMaxAmplitude()
-      Logger.info('maxAmplitude', this.maxAmplitude.toString())
-    }, 100)
-  }
-
-  async stopRecord() {
-    if (this.recordObject) {
-      this.recordObject?.stop()
-      this.recordObject.release()
-      fileIo.closeSync(this.file?.fd)
-      clearInterval(this.timer)
     }
   }
 
@@ -147,25 +106,31 @@ struct RecordingPage {
         title: '面试录音',
         showRightIcon: false
       })
-      Button("点击跳转设置页面").onClick((_: ClickEvent) => {
-        const wantParams: Want = {
-          bundleName: 'com.huawei.hmos.settings',
-          abilityName: 'com.huawei.hmos.settings.MainAbility',
-          uri: 'application_info_entry',
-          parameters: {
-            pushParams: 'com.taobao.interview_success_ai'
-          }
+      Column() {
+        List() {
+          ForEach(this.list, (item: InterviewAudioItem) => {
+            ListItem() {
+              AudioItemComponent({
+                item: {
+                  id: 1,
+                  name: '2024年10月01日_10点10分10秒',
+                  path: '/data/el/xxx',
+                  user_id: '100',
+                  duration: 10000,
+                  size: 10000,
+                  create_time: 10000
+                }
+              })
+            }
+          })
         }
-        const UIAbilityContext = this.getUIContext().getHostContext() as common.UIAbilityContext
-        UIAbilityContext.startAbility(wantParams)
-      })
-      Row() {AudioAmplitudeStyle({maxAmplitude: this.maxAmplitude})}.width('80%')
-      Button("开始录音").onClick((event: ClickEvent) => this.startRecord())
-      Button("停止录音").onClick((event: ClickEvent) => this.stopRecord())
+        .width('100%')
+        .height('100%')
+      }
+      .width('100%')
+      .layoutWeight(1)
 
-      Progress({ total: this.audioTotal, value: this.currentProgram }).width('100%').padding(10)
-      Button("开始播放").onClick((event: ClickEvent) => this.startPlayAudio())
-      Button("停止播放").onClick((event: ClickEvent) => this.stopPlayAudio())
+      AudioRecordComponent()
     }
     .width('100%')
     .height('100%')
