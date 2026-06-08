@@ -30,10 +30,6 @@ struct RecordingPage {
   recordObject?: media.AVRecorder
   timer?: number
   @State maxAmplitude: number = 0 // 每次保存的最大振幅必须是状态变量 否则无法触发视图刷新
-  // 播音相关变量
-  avPlayer?: media.AVPlayer
-  @State audioTotal: number = 0
-  @State currentProgram: number = 0
   @State list: InterviewAudioItem[] = []
   @State currentItem: InterviewAudioItem = {} as InterviewAudioItem
   inputDialog = new CustomDialogController({
@@ -84,46 +80,6 @@ struct RecordingPage {
     }
   }
 
-  /**
-   * 实现音频的播放和停止
-   */
-  async startPlayAudio() {
-    try {
-      if (!this.file) {
-        this.getUIContext().getPromptAction().showToast({message:'请先开始录音'})
-        return
-      }
-      if (!this.avPlayer) {
-        const file = fileIo.openSync(this.file.path, fileIo.OpenMode.READ_ONLY)
-        const avPlayer = await media.createAVPlayer()
-        avPlayer.url = `fd://${this.file.fd}` // 设置播放源
-        avPlayer.on('stateChange', (state)=>{
-          if (state == 'initialized') {
-            avPlayer.prepare()
-          } else if (state == 'prepared') {
-            avPlayer.loop = true //
-            avPlayer.play()
-            this.audioTotal = avPlayer.duration
-          }
-        })
-        this.avPlayer = avPlayer
-        avPlayer.on('timeUpdate', (timeChange) => {
-          this.currentProgram = timeChange // 监听时长变化
-        })
-      }
-    } catch (error) {
-      // 音频播放失败
-      Logger.error('startPlayAudio', error)
-    }
-  }
-
-  stopPlayAudio() {
-    if (!!this.avPlayer) {
-      this.avPlayer.stop()
-      this.avPlayer.release()
-    }
-  }
-
   build() {
     Column() {
       NavigationBar({
@@ -136,7 +92,10 @@ struct RecordingPage {
             ListItem() {
               AudioItemComponent({
                 item
-              }).onClick(() => this.isShowBind = true)
+              }).onClick(() => {
+                this.isShowBind = true
+                this.currentItem = item
+              })
             }.swipeAction({
               end: this.ListItemSwiperBuilder(item)
             })
@@ -183,7 +142,9 @@ struct RecordingPage {
 
   @Builder ShowAudioPlayerBind() {
     Column() {
-      AudioPlayerSheet()
+      AudioPlayerSheet({
+        currentItem: this.currentItem
+      })
     }
   }
 }
