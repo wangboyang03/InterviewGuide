@@ -2,6 +2,7 @@ import { Auth, Constants, NavigationBar, NetworkUtil, UserResponse } from 'basic
 import { CustomLoadingDialog } from 'homepage'
 import { fileIo, picker } from '@kit.CoreFileKit'
 import { FormData } from '@ohos/axios'
+import { image } from '@kit.ImageKit'
 
 @Entry
 @Component
@@ -47,12 +48,28 @@ struct ProfilePage {
           const file = fileIo.openSync(photoUri, fileIo.OpenMode.READ_ONLY) // 打开相册里的文件
           const newFile = fileIo.openSync(tempPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
           fileIo.copyFileSync(file.fd, newFile.fd)
+          /** 这里发现相册里图片太大 网络请求比较慢 使用工具压缩一下吧
+           * 方法1 使用图片生成器进行质量调整
+           * 方法2 harmony-utils/ImageUtil 支持图片压缩
+           * **/
+          const imagePacker = image.createImagePacker()
+          const imageSource = image.createImageSource(tempPath) // 这里直接用相册路径不行 必须是沙箱路径
+          const fileZip = await imagePacker.packToData(imageSource, {
+            /** 坑点: 如果返回ImageSource或PixelMap,是不支持jpg格式的 **/
+            format: "image/jpeg",
+            quality: 30
+          })
+          const zipPath = context.cacheDir + '/' + Date.now() + '_zip.jpeg'
+          const zipFile = fileIo.openSync(zipPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+          fileIo.writeSync(zipFile.fd, fileZip)
+          fileIo.closeSync(zipFile.fd)
           fileIo.closeSync(file.fd)
           fileIo.closeSync(newFile.fd)
           // this.getUIContext().getPromptAction().showDialog({message: newFile.path})
           // 3. 创建一个fromData对象 把键值传入 返回对象发送网络请求
           const formData = new FormData()
-          const fileName = tempPath.split('/').pop()
+          // const fileName = tempPath.split('/').pop()
+          const fileName = zipPath.split('/').pop()
           formData.append('file', `internal://cache/${fileName}`)
           await NetworkUtil.getInstance().request<null>({
             url: Constants.UPDATE_AVATAR,
@@ -71,7 +88,7 @@ struct ProfilePage {
         }
       }
     } catch (error) {
-      this.getUIContext().getPromptAction().showToast({message: '更新头像失败'})
+      this.getUIContext().getPromptAction().showToast({message: `更新头像失败,${error}`})
     }
   }
 

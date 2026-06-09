@@ -32,7 +32,6 @@ export struct HomePageView {
               })
             }
           })
-          Button('数据库').onClick((_: ClickEvent) => this.getUIContext().getRouter().pushUrl({url: PAGE_PATH.RDB_PAGE}))
         }
 
         SearchBox() {
