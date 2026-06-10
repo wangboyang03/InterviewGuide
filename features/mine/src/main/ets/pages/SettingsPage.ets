@@ -1,6 +1,6 @@
 import { Auth, NavigationBar, PAGE_PATH, UserResponse, Constants } from 'basic';
 import { SettingsThemeDialog } from '../views';
-import { ConfigurationConstant } from '@kit.AbilityKit';
+import { bundleManager, ConfigurationConstant } from '@kit.AbilityKit';
 import { fileIo, storageStatistics } from '@kit.CoreFileKit';
 
 export interface Tool {
@@ -20,6 +20,7 @@ struct SettingsPage {
   })
   @StorageProp(Constants.THEME_COLOR_KEY) themeColor: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State cacheSize: string = ''
+  @State appVersion: string = '0.0.1'
 
   async computeCacheDir() {
     const res = await storageStatistics.getCurrentBundleStats()
@@ -51,8 +52,14 @@ struct SettingsPage {
     }
   }
 
+  async getAppVersion() {
+    const res = await bundleManager.getBundleInfoForSelf(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)
+    this.appVersion = res.vendor
+  }
+
   aboutToAppear(): void {
     this.computeCacheDir()
+    this.getAppVersion()
   }
 
   build() {
@@ -78,7 +85,7 @@ struct SettingsPage {
         this.toolsBuilder({
           name: '清除应用缓存', value: this.cacheSize, onClick: ():void => this.clearCacheDir()
         })
-        this.toolsBuilder({ name: '当前版本', value: '1.0.0', radius: 2 })
+        this.toolsBuilder({ name: '当前版本', value: this.appVersion, radius: 2 })
         Blank().height(15)
         Text('退出账号')
           .height(50)
