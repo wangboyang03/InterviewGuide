@@ -1,5 +1,6 @@
-import { Auth, NavigationBar, PAGE_PATH, UserResponse } from 'basic';
+import { Auth, NavigationBar, PAGE_PATH, UserResponse, Constants } from 'basic';
 import { SettingsThemeDialog } from '../views';
+import { ConfigurationConstant } from '@kit.AbilityKit';
 
 export interface Tool {
   icon?: ResourceStr
@@ -15,7 +16,8 @@ struct SettingsPage {
   openSelectedThemeDialog = new CustomDialogController({
     builder: SettingsThemeDialog(),
     alignment: DialogAlignment.Bottom
-})
+  })
+  @StorageProp(Constants.THEME_COLOR_KEY) themeColor: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
 
   build() {
     Column() {
@@ -33,7 +35,7 @@ struct SettingsPage {
         this.toolsBuilder({ name: '消息推送', radius: 1 })
         this.toolsBuilder({
           name: '深色模式',
-          value: '已关闭',
+          value: this.themeColor == ConfigurationConstant.ColorMode.COLOR_MODE_DARK ? '已打开' : '已关闭',
           radius: 1,
           onClick: (): void => this.openSelectedThemeDialog.open()
         })
