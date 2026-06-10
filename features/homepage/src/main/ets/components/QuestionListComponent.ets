@@ -138,6 +138,8 @@ export struct QuestionListComponent {
         })
         this.getBottomDisplay() // 放在底部的提示
       }
+      .width('100%')
+      .height('100%')
       .divider({
         color: $r("app.color.common_gray_border"),
         strokeWidth: 0.5,

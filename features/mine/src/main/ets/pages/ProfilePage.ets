@@ -3,6 +3,7 @@ import { CustomLoadingDialog } from 'homepage'
 import { fileIo, picker } from '@kit.CoreFileKit'
 import { FormData } from '@ohos/axios'
 import { image } from '@kit.ImageKit'
+import { ImageUtil } from '@pura/harmony-utils'
 
 @Entry
 @Component
@@ -44,33 +45,39 @@ struct ProfilePage {
         // 2.根据uri地址复制文件到沙箱
         const context = this.getUIContext().getHostContext()
         if (context) {
-          const tempPath = context.cacheDir + '/' + Date.now() + '.jpg'
-          const file = fileIo.openSync(photoUri, fileIo.OpenMode.READ_ONLY) // 打开相册里的文件
-          const newFile = fileIo.openSync(tempPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
-          fileIo.copyFileSync(file.fd, newFile.fd)
+          // const tempPath = context.cacheDir + '/' + Date.now() + '.jpg'
+          // const file = fileIo.openSync(photoUri, fileIo.OpenMode.READ_ONLY) // 打开相册里的文件
+          // const newFile = fileIo.openSync(tempPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+          // fileIo.copyFileSync(file.fd, newFile.fd)
           /** 这里发现相册里图片太大 网络请求比较慢 使用工具压缩一下吧
            * 方法1 使用图片生成器进行质量调整
-           * 方法2 harmony-utils/ImageUtil 支持图片压缩
+           * 方法2 harmony-utils/ImageUtil 支持图片压缩 但是返回的路径并非沙箱临时目录 而是temp
            * **/
-          const imagePacker = image.createImagePacker()
-          const imageSource = image.createImageSource(tempPath) // 这里直接用相册路径不行 必须是沙箱路径
-          const fileZip = await imagePacker.packToData(imageSource, {
-            /** 坑点: 如果返回ImageSource或PixelMap,是不支持jpg格式的 **/
-            format: "image/jpeg",
-            quality: 30
-          })
-          const zipPath = context.cacheDir + '/' + Date.now() + '_zip.jpeg'
-          const zipFile = fileIo.openSync(zipPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
-          fileIo.writeSync(zipFile.fd, fileZip)
-          fileIo.closeSync(zipFile.fd)
-          fileIo.closeSync(file.fd)
-          fileIo.closeSync(newFile.fd)
+          // const imagePacker = image.createImagePacker()
+          // const imageSource = image.createImageSource(tempPath) // 这里直接用相册路径不行 必须是沙箱路径
+          // const fileZip = await imagePacker.packToData(imageSource, {
+          //   /** 坑点: 如果返回ImageSource或PixelMap,是不支持jpg格式的 **/
+          //   format: "image/jpeg",
+          //   quality: 30
+          // })
+          // const zipPath = context.cacheDir + '/' + Date.now() + '_zip.jpeg'
+          // const zipFile = fileIo.openSync(zipPath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+          // fileIo.writeSync(zipFile.fd, fileZip)
+          // fileIo.closeSync(zipFile.fd)
+          const fileZipPath = await ImageUtil.compressPhoto(photoUri, 100)
+          // fileIo.closeSync(file.fd)
+          // fileIo.closeSync(newFile.fd)
           // this.getUIContext().getPromptAction().showDialog({message: newFile.path})
           // 3. 创建一个fromData对象 把键值传入 返回对象发送网络请求
           const formData = new FormData()
           // const fileName = tempPath.split('/').pop()
-          const fileName = zipPath.split('/').pop()
-          formData.append('file', `internal://cache/${fileName}`)
+          const fileName = fileZipPath.split('/').pop()
+          // formData.append('file', `internal://cache/${fileName}`)
+          const currentYear = new Date().getFullYear()
+          const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0')
+          const currentDay = String(new Date().getDate()).padStart(2, '0')
+          const currentKeyPath = `${currentYear}-${currentMonth}-${currentDay}`
+          formData.append('file', `internal://temp/${currentKeyPath}/${fileName}`)
           await NetworkUtil.getInstance().request<null>({
             url: Constants.UPDATE_AVATAR,
             method: 'post',

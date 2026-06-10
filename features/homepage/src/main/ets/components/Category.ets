@@ -44,7 +44,7 @@ export struct HomePageCategory {
 
       Row() {
         Image($r('app.media.ic_home_filter'))
-          .width(24)
+          .width(26)
           .aspectRatio(1)
       }
       .height(44)
@@ -53,6 +53,9 @@ export struct HomePageCategory {
       .bindSheet($$this.isShowSheet, this.FilterSheetBuilder(), {
         showClose: false,
         height: 500
+      })
+      .margin({
+        right: 4
       })
       .onClick(() => {
         this.isShowSheet = true
