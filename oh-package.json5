@@ -4,7 +4,8 @@
   "dependencies": {
     "@ohos/axios": "^2.2.10",
     "@ohmos/calendar": "^2.1.4",
-    "@pura/harmony-utils": "^1.4.1"
+    "@pura/harmony-utils": "^1.4.1",
+    "fetch_event_source": "^1.0.0"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.25",

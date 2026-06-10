@@ -49,4 +49,5 @@ export class PAGE_PATH {
   // static readonly RDB_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.HOMEPAGE_MODULE}/ets/pages/RDBPage`
   static readonly SETTINGS_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/SettingsPage`
   static readonly PROFILE_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/ProfilePage`
+  static readonly AI_PAGE = `@bundle:${Constants.BUNDLE_NAME}/${Constants.MINE_MODULE}/ets/pages/AIPage`
 }
