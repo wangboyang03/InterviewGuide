@@ -1,4 +1,5 @@
 import { Auth, NavigationBar, PAGE_PATH, UserResponse } from 'basic';
+import { SettingsThemeDialog } from '../views';
 
 export interface Tool {
   icon?: ResourceStr
@@ -11,8 +12,55 @@ export interface Tool {
 @Entry
 @Component
 struct SettingsPage {
-  @Builder
-  toolsBuilder(tool: Tool) {
+  openSelectedThemeDialog = new CustomDialogController({
+    builder: SettingsThemeDialog(),
+    alignment: DialogAlignment.Bottom
+})
+
+  build() {
+    Column() {
+      NavigationBar({ title: '设置', showRightIcon: false, showBorder: true })
+      Column({ space: 0.5 }) {
+        Blank()
+          .height(15)
+        this.toolsBuilder({
+          name: '编辑资料', radius: 1, onClick: () => {
+            Auth.getInstance().checkAuth({url: PAGE_PATH.PROFILE_PAGE})
+          }
+        })
+        this.toolsBuilder({ name: '账号设置', radius: 2 })
+        Blank().height(15)
+        this.toolsBuilder({ name: '消息推送', radius: 1 })
+        this.toolsBuilder({
+          name: '深色模式',
+          value: '已关闭',
+          radius: 1,
+          onClick: (): void => this.openSelectedThemeDialog.open()
+        })
+        this.toolsBuilder({
+          name: '清除应用缓存', value: '10MB', onClick: () => {
+            // TODO 清除缓存
+          }
+        })
+        this.toolsBuilder({ name: '当前版本', value: '1.0.0', radius: 2 })
+        Blank()
+          .height(15)
+        Text('退出账号')
+          .height(50)
+          .fontColor($r('app.color.common_main_color'))
+          .opacity(0.6)
+          .onClick(async () => {
+            Auth.getInstance().setUser({} as UserResponse)
+            this.getUIContext().getRouter().back()
+          })
+      }
+      .layoutWeight(1)
+      .padding({ right: 15, left: 15 })
+      .backgroundColor($r('app.color.common_gray_bg'))
+    }
+  }
+
+  @Builder toolsBuilder(tool: Tool) {
     Row() {
       if (tool.icon) {
         Image(tool.icon)
@@ -47,50 +95,5 @@ struct SettingsPage {
     .onClick(() => {
       tool.onClick && tool.onClick()
     })
-  }
-
-  build() {
-    Column() {
-      NavigationBar({ title: '设置', showRightIcon: false, showBorder: true })
-      Column({ space: 0.5 }) {
-        Blank()
-          .height(15)
-        this.toolsBuilder({
-          name: '编辑资料', radius: 1, onClick: () => {
-            Auth.getInstance().checkAuth({url: PAGE_PATH.PROFILE_PAGE})
-          }
-        })
-        this.toolsBuilder({ name: '账号设置', radius: 2 })
-        Blank().height(15)
-        this.toolsBuilder({ name: '消息推送', radius: 1 })
-        this.toolsBuilder({
-          name: '深色模式',
-          value: '已关闭',
-          radius: 1,
-          onClick: () => {
-            // TODO 设置主题
-          }
-        })
-        this.toolsBuilder({
-          name: '清除应用缓存', value: '10MB', onClick: () => {
-            // TODO 清除缓存
-          }
-        })
-        this.toolsBuilder({ name: '当前版本', value: '1.0.0', radius: 2 })
-        Blank()
-          .height(15)
-        Text('退出账号')
-          .height(50)
-          .fontColor($r('app.color.common_main_color'))
-          .opacity(0.6)
-          .onClick(async () => {
-            Auth.getInstance().setUser({} as UserResponse)
-            this.getUIContext().getRouter().back()
-          })
-      }
-      .layoutWeight(1)
-      .padding({ right: 15, left: 15 })
-      .backgroundColor($r('app.color.common_gray_bg'))
-    }
   }
 }
