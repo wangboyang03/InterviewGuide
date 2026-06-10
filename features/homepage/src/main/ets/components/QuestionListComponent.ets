@@ -1,4 +1,6 @@
-import { Auth, Constants, HighlightLabelStyle, Logger, NetworkUtil, PAGE_PATH, QuestionItem, QuestionPageResponse } from "basic"
+import { Auth,
+  BasicDataSource,
+  Constants, HighlightLabelStyle, Logger, NetworkUtil, PAGE_PATH, QuestionItem, QuestionPageResponse } from "basic"
 import { PageData, QuestionListRequest, SortType } from "../models"
 import { QuestionItemComponent } from "./QuestionItemComponent"
 
@@ -12,7 +14,8 @@ export struct QuestionListComponent {
   @Prop @Watch('onChangeSort') sort: SortType = SortType.Default // 排序方式 默认
   @Prop keyword: string = "" // 用于搜索列表复用组件传值
   @State page: number = 1
-  @State questionList: QuestionItem[] = [] // 试题列表
+  // @State questionList: QuestionItem[] = [] // 试题列表
+  questionList = new BasicDataSource<QuestionItem>()
 
   getDisplayText() {
     switch (this.refreshState) {
@@ -48,7 +51,8 @@ export struct QuestionListComponent {
   async onLoad() {
     const result = await this.getQuestionList()
     this.buildHighlightData(result.rows)
-    this.questionList.push(...result.rows)
+    // this.questionList.push(...result.rows)
+    this.questionList.appendDataFromNewArray(result.rows)
     this.loading = false
     if (this.page >= result.pageTotal) {
       this.isFinished = true // 列表全部加载完毕
@@ -62,7 +66,8 @@ export struct QuestionListComponent {
       this.page = 1 // 从头开始请求
       const result = await this.getQuestionList()
       this.buildHighlightData(result.rows)
-      this.questionList = result?.rows
+      // this.questionList = result?.rows
+      this.questionList.reloadDataFromNewArray(result.rows)
       this.refreshing = false
       if (this.page >= result.pageTotal) {
         this.isFinished = true
@@ -123,14 +128,14 @@ export struct QuestionListComponent {
   build() {
     Refresh({ refreshing: $$this.refreshing, builder: this.getRefreshBuilder() }) {
       List() {
-        ForEach(this.questionList, (item: QuestionItem, _:number) => {
+        LazyForEach(this.questionList, (item: QuestionItem, _:number) => {
           ListItem() {
             QuestionItemComponent({item: item, includeKeywordList: item.highLightList}).onClick(() => {
               Auth.getInstance().checkAuth({
                 url: PAGE_PATH.QUESTION_PAGE,
                 params: {
                   item,
-                  list: this.questionList // 跳转时把获取到的当前分类列表传递
+                  list: this.questionList.getAllData() // 跳转时把获取到的当前分类列表传递
                 } as QuestionPageResponse
               })
             })
