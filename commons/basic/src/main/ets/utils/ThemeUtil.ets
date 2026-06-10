@@ -24,7 +24,7 @@ export class ThemeUtil {
     // 1.持久化存储
     PersistentStorage.persistProp(Constants.THEME_COLOR_KEY, ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET)
     const themeColor = AppStorage.get<ConfigurationConstant.ColorMode>(Constants.THEME_COLOR_KEY)
-    if (!!themeColor) {
+    if (themeColor != undefined) {
       this.settingsTheme(themeColor)
     }
   }
@@ -40,6 +40,7 @@ export class ThemeUtil {
         context.getApplicationContext().setColorMode(colorMode)
       }
       AppStorage.set(Constants.THEME_COLOR_KEY, colorMode)
+      AppStorage.set(Constants.CURRENT_DARK, colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_DARK)
     } catch (error) {
       Logger.error(`设置主题失败,${error}`)
     }

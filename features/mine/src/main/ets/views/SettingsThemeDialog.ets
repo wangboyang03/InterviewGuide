@@ -1,5 +1,5 @@
 import { Constants, ThemeUtil } from 'basic'
-import ConfigurationConstant from '@ohos.app.ability.ConfigurationConstant'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @CustomDialog
 export struct SettingsThemeDialog {

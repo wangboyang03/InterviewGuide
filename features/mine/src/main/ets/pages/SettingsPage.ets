@@ -1,6 +1,7 @@
 import { Auth, NavigationBar, PAGE_PATH, UserResponse, Constants } from 'basic';
 import { SettingsThemeDialog } from '../views';
 import { ConfigurationConstant } from '@kit.AbilityKit';
+import { fileIo, storageStatistics } from '@kit.CoreFileKit';
 
 export interface Tool {
   icon?: ResourceStr
@@ -18,6 +19,41 @@ struct SettingsPage {
     alignment: DialogAlignment.Bottom
   })
   @StorageProp(Constants.THEME_COLOR_KEY) themeColor: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  @State cacheSize: string = ''
+
+  async computeCacheDir() {
+    const res = await storageStatistics.getCurrentBundleStats()
+    this.cacheSize = (res.cacheSize / (1000 * 1000)).toFixed(2) + 'MB'
+  }
+
+  clearCacheDir() {
+    try {
+      const context = AppStorage.get<Context>(Constants.GLOBAL_CONTEXT)
+      if (context) {
+        const cacheDir = context.cacheDir
+        const res = fileIo.accessSync(cacheDir)
+        if (res) {
+          fileIo.rmdirSync(cacheDir)
+        }
+        const appContext = context.getApplicationContext()
+        if (appContext) {
+          const appCacheDir = appContext.cacheDir
+          const res = fileIo.accessSync(appCacheDir)
+          if (res) {
+            fileIo.rmdirSync(appCacheDir)
+          }
+        }
+      }
+      this.computeCacheDir()
+      this.getUIContext().getPromptAction().showToast({message:'缓存已清除'})
+    } catch (error) {
+      // 日志.
+    }
+  }
+
+  aboutToAppear(): void {
+    this.computeCacheDir()
+  }
 
   build() {
     Column() {
@@ -35,18 +71,15 @@ struct SettingsPage {
         this.toolsBuilder({ name: '消息推送', radius: 1 })
         this.toolsBuilder({
           name: '深色模式',
-          value: this.themeColor == ConfigurationConstant.ColorMode.COLOR_MODE_DARK ? '已打开' : '已关闭',
+          value: this.themeColor == ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET ? '跟随系统' : this.themeColor == ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT ? '普通模式' : '深色模式',
           radius: 1,
           onClick: (): void => this.openSelectedThemeDialog.open()
         })
         this.toolsBuilder({
-          name: '清除应用缓存', value: '10MB', onClick: () => {
-            // TODO 清除缓存
-          }
+          name: '清除应用缓存', value: this.cacheSize, onClick: ():void => this.clearCacheDir()
         })
         this.toolsBuilder({ name: '当前版本', value: '1.0.0', radius: 2 })
-        Blank()
-          .height(15)
+        Blank().height(15)
         Text('退出账号')
           .height(50)
           .fontColor($r('app.color.common_main_color'))

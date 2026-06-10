@@ -1,4 +1,4 @@
-import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
+import { AbilityConstant, Configuration, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { Auth, Constants, ScreenManager, StatusManager, ThemeUtil } from 'basic';
@@ -8,8 +8,8 @@ const DOMAIN = 0x0000;
 export default class PhoneAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     try {
-      this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
       AppStorage.setOrCreate<Context>(Constants.GLOBAL_CONTEXT, this.context) // 全局存储上下文
+      ThemeUtil.getInstance().initThemeSettings() // 初始化主题设置
     } catch (err) {
       hilog.error(DOMAIN, 'testTag', 'Failed to set colorMode. Cause: %{public}s', JSON.stringify(err));
     }
@@ -24,7 +24,6 @@ export default class PhoneAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     ScreenManager.getInstance().init(this.context).fullScreen() // 开启窗口全屏模式
-    ThemeUtil.getInstance().initThemeSettings() // 初始化主题设置
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));

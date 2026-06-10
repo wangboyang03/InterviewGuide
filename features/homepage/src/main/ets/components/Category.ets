@@ -11,6 +11,7 @@ export struct HomePageCategory {
   @State filterDataSort: SortType = SortType.Default // 过滤排序 默认选中默认
   @State activatedIndex: number = 0 // 试题分类TabBar选中索引 默认第一个
   @State Sort: SortType = SortType.Default // 排序方式 默认
+  @StorageProp(Constants.CURRENT_DARK) isDark: boolean = false
 
   aboutToAppear(): void {
     this.getQuestionTypeList()
@@ -49,7 +50,7 @@ export struct HomePageCategory {
       }
       .height(44)
       .justifyContent(FlexAlign.Center)
-      .linearGradient({ angle: 90, colors: [['#00FFFFFF', 0], ['#FFFFFF', 0.285]] })
+      .linearGradient({ angle: 90, colors: [[this.isDark ? '#00131313' : '#00FFFFFF', 0], [this.isDark ? '#131313' : '#FFFFFF', 0.285]] })
       .bindSheet($$this.isShowSheet, this.FilterSheetBuilder(), {
         showClose: false,
         height: 500

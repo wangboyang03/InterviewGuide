@@ -10,6 +10,7 @@ export class Constants {
   static readonly TRACKING_LEARN_KEY: string = "tracking_learn_key" // 埋点信息记录key
   static readonly PLAY_SOUND_WORD_URL: string = "https://dict.youdao.com/dictvoice?type=1&audio="
   static readonly THEME_COLOR_KEY: string = "theme_color"
+  static readonly CURRENT_DARK: string = "current_dark"
 
   // 模块相关
   static readonly BUNDLE_NAME: string = "com.taobao.interview_success_ai" // 包名
